@@ -1,0 +1,19 @@
+@font-face {
+  font-family: Roboto;
+  src:
+    url(./roboto-400-normal.woff2) format('woff2'),
+    url(./roboto-400-normal.woff) format('woff'),
+    url(./roboto-400-normal.ttf) format('ttf');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Roboto;
+  src:
+    url(./roboto-700-normal.woff2) format('woff2'),
+    url(./roboto-700-normal.woff) format('woff'),
+    url(./roboto-700-normal.ttf) format('ttf');
+  font-weight: bold;
+  font-display: swap;
+}

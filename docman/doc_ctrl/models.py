@@ -12,7 +12,7 @@ class OrdStatus(models.TextChoices):
 
 
 class DocType(models.Model):
-    name = models.CharField(
+    type = models.CharField(
         max_length=127,
         verbose_name='Тип документа'
     )
@@ -20,7 +20,7 @@ class DocType(models.Model):
         verbose_name = 'Тип документа'
         verbose_name_plural = 'Типы документов'
     def __str__(self):
-        return self.name
+        return self.type
 
 
 class Doc(models.Model):

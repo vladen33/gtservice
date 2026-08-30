@@ -1,0 +1,9 @@
+{% extends "ordcontrol/ord_base.html" %}
+
+
+{% block ord_content %}
+  <div>
+    <h1>Информация о документе №{{ instance.number }} от {{ instance.date }}</h1>
+      Instance => {{ instance }}
+  </div>
+{% endblock %}

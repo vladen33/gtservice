@@ -1,0 +1,22 @@
+.ord-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  height: 100%;
+}
+
+.ord-aside-panel {
+  width: 150px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  background-color: beige;
+  border: 1px solid darkcyan;
+  border-radius: 4px;
+}
+
+.ord-content-panel {
+  flex-grow: 1;
+  background-color: beige;
+  border: 1px solid darkcyan;
+  border-radius: 4px;
+}

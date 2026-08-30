@@ -1,0 +1,33 @@
+{% extends "doc_ctrl/doc_base.html" %}
+{% load static %}
+{% load view_mode_tags %}
+
+{% block links %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_as_cards.css' %}">
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_as_table.css' %}">
+{% endblock %}
+
+
+{% block main %}
+  <div class="view-toggle">
+    <a href="{% switch_view_mode 'table' %}"
+       class="toggle-btn {% if view_mode == 'table' %}toggle-active{% endif %}"
+    >Таблица</a>
+    <a href="{% switch_view_mode 'cards' %}"
+       class="toggle-btn {% if view_mode == 'cards' %}toggle-active{% endif %}"
+    >Карточки</a>
+  </div>
+
+  <div class="list-container">
+    {% if view_mode == 'table' %}
+      {% include 'doc_ctrl/doc_list_as_table.html' %}
+    {% else %}
+      {% include 'doc_ctrl/doc_list_as_cards.html' %}
+    {% endif %}
+  </div>
+{% endblock %}
+
+
+

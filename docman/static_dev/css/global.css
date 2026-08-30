@@ -1,0 +1,56 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: space-between; /* первый — вверх, последний — вниз, остальное между ними */
+  width: calc(100vw - 4px);
+  height: calc(100vh - 4px);          /* чтобы контейнер занимал минимум высоту экрана */
+  margin: 2px;
+  background-color: burlywood;
+}
+
+.header,
+.footer {
+  background-color: beige;
+  border: 1px solid darkcyan;
+  border-radius: 4px;
+  padding: 0 16px;
+}
+
+.main {
+  flex-grow: 1; /* занимает всё свободное место */
+  /* height: auto по умолчанию — высота по контенту */
+}
+
+.header__menu {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  list-style: none;
+  margin: 8px auto;
+}
+
+.messages {
+  list-style: none;
+  font-size: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.message.error {
+  background-color: #fee;
+  color: #900;
+  border: 1px solid #ecc;
+}
+
+.message.success {
+  background-color: #efe;
+  color: #060;
+  border: 1px solid #cce;
+}

@@ -75,8 +75,8 @@ class PersonAdmin(admin.ModelAdmin):
 
 @admin.register(DocType)
 class OrdTypeAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
+    list_display = ('type',)
+    search_fields = ('type',)
 
 @admin.register(DocResponsible)
 class DocResponsibleAdmin(admin.ModelAdmin):
