@@ -11,15 +11,10 @@
 
 
 {% block main %}
-  <div class="view-toggle">
-    <a href="{% switch_view_mode 'table' %}"
-       class="toggle-btn {% if view_mode == 'table' %}toggle-active{% endif %}"
-    >Таблица</a>
-    <a href="{% switch_view_mode 'cards' %}"
-       class="toggle-btn {% if view_mode == 'cards' %}toggle-active{% endif %}"
-    >Карточки</a>
+  <div class="action-button-container">
+    <a href="{% url 'doc_ctrl:doc_create' %}"><button type="button" class="action-button">Добавить документ</button></a>
+    <a href="#"><button type="button" class="action-button">Справка</button></a>
   </div>
-
   <div class="list-container">
     {% if view_mode == 'table' %}
       {% include 'doc_ctrl/doc_list_as_table.html' %}
@@ -29,5 +24,15 @@
   </div>
 {% endblock %}
 
+{% block footer %}
+  <div class="view-toggle">
+    <a href="{% switch_view_mode 'table' %}"
+       class="toggle-btn {% if view_mode == 'table' %}toggle-active{% endif %}"
+    >Таблица</a>
+    <a href="{% switch_view_mode 'cards' %}"
+       class="toggle-btn {% if view_mode == 'cards' %}toggle-active{% endif %}"
+    >Карточки</a>
+  </div>
+{% endblock %}
 
 

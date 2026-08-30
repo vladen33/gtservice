@@ -1,23 +1,11 @@
-/*.view-controls {*/
-/*  background-color: #ef9a9a;*/
-/*}*/
-
-/*.view-controls .btn {*/
-/*  display: inline-block;*/
-/*  padding: 6px 12px;*/
-/*  margin-right: 8px;*/
-/*  text-decoration: none;*/
-/*  border: 1px solid #ccc;*/
-/*  background: #f5f5f5;*/
-/*  color: #333;*/
-/*  border-radius: 4px;*/
-/*}*/
-/*.view-controls .btn.btn-active {*/
-/*  background: #005fba;*/
-/*  color: white;*/
-/*  border-color: #005fba;*/
-/*}*/
-
+.action-button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin: 2px;
+  padding: 2px;
+  border: 1px solid #ccc;
+}
 
 .view-toggle {
   display: flex;
@@ -25,13 +13,13 @@
   border: 1px solid #ccc;
   overflow: hidden;
   width: fit-content;
-  margin-bottom: 8px;
+  margin: 0 auto;
 }
 
 .toggle-btn {
   flex: 1;
-  padding: 4px 8px;
-  text-align: center;
+  padding: 2px 4px;
+  text-align: left;
   text-decoration: none;
   color: #333;
   background: #f5f5f5;

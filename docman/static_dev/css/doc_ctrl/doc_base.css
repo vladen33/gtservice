@@ -1,22 +1,90 @@
-.ord-container {
+.body {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 2px;
-  height: 100%;
+  justify-content: space-between;
+  width: calc(100vw - 4px);
+  height: calc(100vh - 4px);
+  margin: 2px;
+  background-color: burlywood;
 }
 
-.ord-aside-panel {
-  width: 150px;
-  flex-shrink: 0;
-  flex-grow: 0;
+.header,
+.main,
+.footer {
   background-color: beige;
   border: 1px solid darkcyan;
   border-radius: 4px;
+  padding: 0 16px;
 }
 
-.ord-content-panel {
-  flex-grow: 1;
-  background-color: beige;
-  border: 1px solid darkcyan;
-  border-radius: 4px;
+.header,
+.footer {
+  height: 26px;
 }
+.main {
+  flex-grow: 1; /* занимает всё свободное место */
+  height: auto;
+}
+
+
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+/*.header__menu {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  gap: 20px;*/
+/*  list-style: none;*/
+/*  margin: 8px auto;*/
+/*}*/
+
+/*.messages {*/
+/*  list-style: none;*/
+/*  font-size: 10px;*/
+/*  padding: 0;*/
+/*  margin: 0;*/
+/*}*/
+
+/*.message {*/
+/*  padding: 10px;*/
+/*  margin-bottom: 10px;*/
+/*  border-radius: 4px;*/
+/*}*/
+
+/*.message.error {*/
+/*  background-color: #fee;*/
+/*  color: #900;*/
+/*  border: 1px solid #ecc;*/
+/*}*/
+
+/*.message.success {*/
+/*  background-color: #efe;*/
+/*  color: #060;*/
+/*  border: 1px solid #cce;*/
+/*}*/
+
+
+/*.ord-container {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  gap: 2px;*/
+/*  height: 100%;*/
+/*}*/
+
+/*.ord-aside-panel {*/
+/*  width: 150px;*/
+/*  flex-shrink: 0;*/
+/*  flex-grow: 0;*/
+/*  background-color: beige;*/
+/*  border: 1px solid darkcyan;*/
+/*  border-radius: 4px;*/
+/*}*/
+
+/*.ord-content-panel {*/
+/*  flex-grow: 1;*/
+/*  background-color: beige;*/
+/*  border: 1px solid darkcyan;*/
+/*  border-radius: 4px;*/
+/*}*/

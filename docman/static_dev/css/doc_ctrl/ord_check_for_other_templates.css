@@ -129,15 +129,6 @@ textarea[name="responsibles_task[]"] {
   background-color: orangered;
 }
 
-.action-button-container {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-  margin-bottom: 4px;
-  padding: 4px;
-  border: 1px solid #ccc;
-}
-
 .width100 {
   width: 100%
 }
