@@ -9,13 +9,13 @@
 
 {% block main %}
   <div class="doc-create-container">
-    <h1>Создать новый документ (ОРД)</h1>
+    <h1>Добавить новый документ</h1>
 
-    <form id="ord-form" method="post">
+    <form id="doc-form" method="post">
       {% csrf_token %}
 
       <!-- Поля документа Ord -->
-    <fieldset class="form-section">
+    <fieldset class="doc-form-section">
       <legend>Данные документа</legend>
         <table>
           {{ form.as_table }}
@@ -23,7 +23,7 @@
     </fieldset>
 
       <!-- Блок ответственных: OrdResponsible -->
-    <fieldset class="form-section">
+    <fieldset class="doc-form-section">
       <legend>Ответственные лица</legend>
         <table class="ord-table">
           <colgroup>
@@ -38,7 +38,7 @@
             <tr>
               <th>
                 Ответственное лицо
-                <button type="button" id="add-responsible-btn" class="ord-menu-button" style="margin-top: 0.5em;">
+                <button type="button" id="add-responsible-btn">
                   +
                 </button>
               </th>
@@ -55,11 +55,11 @@
         </table>
     </fieldset>
       <a href="{% url 'doc_ctrl:doc_list' %}">
-        <button type="button" class="ord-menu-button">
+        <button type="button">
           Отменить
         </button>
       </a>
-      <button type="submit" class="ord-menu-button">
+      <button type="submit">
         Создать новый документ
       </button>
     </form>

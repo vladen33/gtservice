@@ -8,11 +8,11 @@
   <div class="ord-edit-container">
     <h1>Редактирование документа</h1>
 
-    <form id="ord-form" method="post">
+    <form id="doc-form" method="post">
       {% csrf_token %}
 
       <!-- Поля документа Ord -->
-      <fieldset class="form-section">
+      <fieldset class="doc-form-section">
         <legend>Данные документа</legend>
           <table>
             {{ form.as_table }}
@@ -20,7 +20,7 @@
       </fieldset>
 
         <!-- Блок ответственных: OrdResponsible -->
-      <fieldset class="form-section">
+      <fieldset class="doc-form-section">
         <legend>Ответственные лица</legend>
           <table class="ord-table">
             <colgroup>
@@ -35,7 +35,7 @@
               <tr>
                 <th>
                   Ответственное лицо
-                  <button type="button" id="add-responsible-btn" class="ord-menu-button" style="margin-top: 0.5em;">
+                  <button type="button" id="add-responsible-btn">
                     +
                   </button>
                 </th>
@@ -76,7 +76,6 @@
                   <td>
                     <input
                       type="checkbox"
-                      class="is-indefinite-cb"
                       {% if resp.is_indefinite %} checked {% endif %}
                       value=""
                       onchange="toggleDeadline(this)"
@@ -86,12 +85,12 @@
                     <input
                       type="hidden"
                       name="responsibles_deadline[]"
-                      class="deadline-hidden-input"
+                      class="deadline-hidden-field"
                       value="{{ resp.deadline|date:'Y-m-d' }}"
                     >
                     <input
                       type="date"
-                      class="deadline-date-input width100"
+                      class="deadline-date-field"
                       disabled
                       onchange="addDateToHidden(this, this.previousElementSibling)"
                       value="{{ resp.deadline|date:'Y-m-d' }}"
@@ -99,7 +98,7 @@
                   </td>
 
                   <td>
-                    <button type="button" class="remove-row-btn width100" >
+                    <button type="button" class="remove-row-btn">
                       Удалить
                     </button>
                   </td>
@@ -111,11 +110,11 @@
       </fieldset>
 
       <a href="{% url 'ordcontrol:ord_list' %}">
-        <button type="button" class="ord-menu-button">
+        <button type="button">
           Отменить
         </button>
       </a>
-      <button type="submit" class="ord-menu-button" style="margin-top: 1em;">
+      <button type="submit">
         Сохранить изменения
       </button>
     </form>

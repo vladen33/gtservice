@@ -6,13 +6,7 @@
 /*  vertical-align: top; !* чтобы textarea не «плавал» по вертикали *!*/
 /*}*/
 
-textarea[name="responsibles_task[]"] {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box; /* padding и border включаются в ширину/высоту */
-  resize: vertical; /* разрешить менять размер только по высоте */
-  min-height: 3rem;   /* минимальная высота, чтобы ячейка не схлопывалась */
-}
+
 
 .btn-edit, .btn-view {
   text-decoration: none;
@@ -68,12 +62,6 @@ textarea[name="responsibles_task[]"] {
 .button_red {
   background-color: orangered;
 }
-
-.width100 {
-  width: 100%
-}
-
-
 
 .resp-card {
   border: 1px solid #e0e0e0;
