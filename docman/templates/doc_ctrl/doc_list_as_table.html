@@ -1,4 +1,4 @@
-<table class="ord-table">
+<table class="doc-table">
   <thead>
     <tr>
       <th>Статус</th>
@@ -21,7 +21,7 @@
           </span>
         </td>
 
-        <td>{{ doc.doc_type.name }}</td>
+        <td>{{ doc.doc_type.type }}</td>
         <td>{{ doc.number }}</td>
         <td>{{ doc.date|date:"d.m.Y" }}</td>
         <td>{{ doc.title }}</td>
@@ -30,18 +30,18 @@
         <td>{{ doc.valid_to_date|date:"d.m.Y" }}</td>
         <td>
           {% if doc.responsibles.all %}
-            <div class="responsibles-cards">
+            <div class="table-resp-cards-container">
               {% for resp in doc.responsibles.all %}
-                <div class="resp-card">
-                  <div class="resp-header">
-                    <span class="resp-name">{{ resp.person.full_name_initials }}</span>
-                    <span class="resp-role">{{ resp.role|default:"—" }}</span>
+                <div class="table-resp-card">
+                  <div class="table-resp-header">
+                    <span class="table-resp-name">{{ resp.person.full_name_initials }}</span>
+                    <span class="table-resp-role">{{ resp.role|default:"роль не указана" }}</span>
                   </div>
 
-                  <div class="resp-body">
-                    <div class="resp-row">
-                      <span class="label">Комментарий:</span>
-                      <span class="value">
+                  <div class="table-resp-task">
+                    <div>
+                      <span class="table-resp-label">Задача:</span>
+                      <span class="table-resp-value">
                         {% if resp.task %}
                           {{ resp.task|truncatechars:60 }}
                         {% else %}
@@ -50,9 +50,9 @@
                       </span>
                     </div>
 
-                    <div class="resp-row">
-                      <span class="label">Срок:</span>
-                      <span class="value">
+                    <div>
+                      <span class="table-resp-label">Срок:</span>
+                      <span class="table-resp-value">
                         {% if resp.is_indefinite %}
                           бессрочно
                         {% elif resp.deadline %}
@@ -67,15 +67,15 @@
               {% endfor %}
             </div>
           {% else %}
-            Нет ответственных
+            <span class="table-resp-absence">Нет ответственных</span>
           {% endif %}
         </td>
 
-        <td class="actions-cell">
-          <div class="actions-column">
-            <a href="{% url 'doc_ctrl:doc_detail' doc.pk %}" class="action-btn action-view">просмотр</a>
-            <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="action-btn action-edit">ред.</a>
-            <a href="{% url 'doc_ctrl:doc_delete' doc.pk %}" class="action-btn action-delete">удалить</a>
+        <td>
+          <div class="table-actions-column">
+            <a href="{% url 'doc_ctrl:doc_detail' doc.pk %}" class="table-row-btn action-view">Подробнее...</a>
+            <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="table-row-btn action-edit">Редактировать</a>
+            <a href="{% url 'doc_ctrl:doc_delete' doc.pk %}" class="table-row-btn action-delete">Удалить</a>
           </div>
         </td>
       </tr>

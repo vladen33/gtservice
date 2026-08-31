@@ -1,6 +1,6 @@
-<div class="ords-grid">
+<div class="doc-grid">
   {% for doc in docs %}
-    <div class="ord-card">
+    <div class="doc-card">
 
       <!-- Верхняя полоса: Статус + Тип + Номер -->
       <div class="card-header">
@@ -29,22 +29,22 @@
         <div class="card-responsibles">
            {% if doc.responsibles.all %}
              {% for resp in doc.responsibles.all %}
-               <div class="resp-chip">
+               <div class="card-resp-chip">
                  {{ resp.person.full_name_initials }}
                  <small>({{ resp.role|truncatechars:10 }})</small>
                </div>
              {% endfor %}
            {% else %}
-             <span class="resp-absence">Нет ответственных</span>
+             <span class="card-resp-absence">Нет ответственных</span>
            {% endif %}
         </div>
       </div>
 
       <!-- Действия внизу карточки -->
       <div class="card-actions">
-        <a href="{% url 'doc_ctrl:doc_detail' doc.pk %}" class="btn-sm btn-view">Подробнее...</a>
-        <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="btn-sm btn-edit">Редактировать</a>
-        <a href="{% url 'doc_ctrl:doc_delete' doc.pk %}" class="btn-sm btn-delete">Удалить</a>
+        <a href="{% url 'doc_ctrl:doc_detail' doc.pk %}" class="card-btn">Подробнее...</a>
+        <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="card-btn">Редактировать</a>
+        <a href="{% url 'doc_ctrl:doc_delete' doc.pk %}" class="card-btn">Удалить</a>
       </div>
 
     </div>

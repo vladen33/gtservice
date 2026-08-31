@@ -44,3 +44,15 @@
   font-weight: 700;
   border: 1px solid #005fba;
 }
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+/* Пример цветов для статусов (подстрой под свои OrdStatus) */
+.status-active { background-color: #d4edda; color: #155724; }
+.status-cancelled { background-color: #f8d7da; color: #721c24; }
+.status-modified { background-color: #d6c03a; color: #572500; }

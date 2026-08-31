@@ -1,10 +1,10 @@
-.ords-grid {
+.doc-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); /* Адаптивная сетка */
   gap: 8px;
 }
 
-.ord-card {
+.doc-card {
   border: 1px solid #aaa;
   border-radius: 8px;
   padding: 8px;
@@ -22,18 +22,6 @@
   border-bottom: 1px solid #aaa;
   padding-bottom: 2px;
 }
-
-.status-badge {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 400;
-  font-size: 0.8rem;
-}
-
-/* Пример цветов для статусов (подстрой под свои OrdStatus) */
-.status-active { background-color: #d4edda; color: #155724; }
-.status-cancelled { background-color: #f8d7da; color: #721c24; }
-.status-modified { background-color: #d6c03a; color: #572500; }
 
 .card-type {
   font-size: 0.9rem;
@@ -59,7 +47,7 @@
   margin-bottom: 4px;
 }
 
-.resp-chip {
+.card-resp-chip {
   display: inline-block;
   background: #eef;
   color: #005fba;
@@ -70,7 +58,7 @@
   margin-bottom: 6px;
 }
 
-.resp-absence {
+.card-resp-absence {
   font-size: 0.75rem;
   font-style: italic;
   color: #bbb;
@@ -84,7 +72,7 @@
   border-top: 1px solid #aaa;
 }
 
-.btn-sm {
+.card-btn {
   flex: 1;
   padding: 2px;
   text-align: center;

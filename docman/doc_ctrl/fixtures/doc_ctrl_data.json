@@ -54,7 +54,7 @@
     "summary": "Назначить Иванова И.И. ответственным за пожарную безопасность на участке №1",
     "valid_from_date": "2026-08-31",
     "valid_to_date": "9999-01-01",
-    "status": "active",
+    "status": "cancelled",
     "created_at": "2026-08-31T07:15:26.363Z"
   }
 },
@@ -84,7 +84,7 @@
     "summary": "Сидоров С.С. назначен ответственным за контроль охраны труда в отделе логистики",
     "valid_from_date": "2026-08-31",
     "valid_to_date": "9999-01-01",
-    "status": "active",
+    "status": "modified",
     "created_at": "2026-08-31T07:15:26.363Z"
   }
 },
@@ -95,8 +95,8 @@
     "number": "02ПР-0006",
     "date": "2026-08-31",
     "doc_type": 1,
-    "title": "#",
-    "summary": "*",
+    "title": "О контроле доступа к конфиденциальным данным",
+    "summary": "Устинов У.У. назначен ответственным за контроль доступа к конфиденциальной информации",
     "valid_from_date": "2026-08-31",
     "valid_to_date": "9999-01-01",
     "status": "active",
@@ -129,7 +129,7 @@
     "summary": "Новикова Н.Н. назначена ответственной за пропускной режим на КПП №2",
     "valid_from_date": "2026-08-31",
     "valid_to_date": "9999-01-01",
-    "status": "active",
+    "status": "modified",
     "created_at": "2026-08-31T07:15:26.363Z"
   }
 },
@@ -174,7 +174,7 @@
     "summary": "Волков В.В. назначен ответственным за техэксплуатацию оборудования цеха №4",
     "valid_from_date": "2026-08-31",
     "valid_to_date": "9999-01-01",
-    "status": "active",
+    "status": "cancelled",
     "created_at": "2026-08-31T07:15:26.363Z"
   }
 },
@@ -204,7 +204,7 @@
     "summary": "Орлова О.О. назначена ответственной за контроль сроков исполнения входящих документов",
     "valid_from_date": "2026-08-31",
     "valid_to_date": "9999-01-01",
-    "status": "active",
+    "status": "modified",
     "created_at": "2026-08-31T07:15:26.363Z"
   }
 },
@@ -249,7 +249,7 @@
     "summary": "Титова Т.Т. назначена ответственной за мониторинг энергопотребления объектов",
     "valid_from_date": "2026-08-31",
     "valid_to_date": "9999-01-01",
-    "status": "active",
+    "status": "cancelled",
     "created_at": "2026-08-31T07:15:26.363Z"
   }
 },
@@ -359,6 +359,138 @@
     "is_indefinite": true,
     "deadline": null,
     "task": "Подписывает приказы о сверхурочной работе"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 5,
+  "fields": {
+    "doc": 1,
+    "person": 3,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "123"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 6,
+  "fields": {
+    "doc": 1,
+    "person": 2,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "345"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 7,
+  "fields": {
+    "doc": 1,
+    "person": 6,
+    "role": "",
+    "is_indefinite": false,
+    "deadline": "2026-09-01",
+    "task": "546"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 8,
+  "fields": {
+    "doc": 1,
+    "person": 5,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "678"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 9,
+  "fields": {
+    "doc": 5,
+    "person": 1,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "e34b56bhw356bh"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 10,
+  "fields": {
+    "doc": 5,
+    "person": 3,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "eb4567e456"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 11,
+  "fields": {
+    "doc": 5,
+    "person": 6,
+    "role": "",
+    "is_indefinite": false,
+    "deadline": "2026-09-17",
+    "task": "e467e4gh56"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 12,
+  "fields": {
+    "doc": 14,
+    "person": 2,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "rdtyerbttye"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 13,
+  "fields": {
+    "doc": 14,
+    "person": 1,
+    "role": "",
+    "is_indefinite": false,
+    "deadline": "2026-09-18",
+    "task": "ryber5ywe4bh"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 14,
+  "fields": {
+    "doc": 14,
+    "person": 5,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "5ytbwe45y6w3bh456t"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 15,
+  "fields": {
+    "doc": 14,
+    "person": 4,
+    "role": "",
+    "is_indefinite": false,
+    "deadline": "2026-10-15",
+    "task": "bhwe3546w3bh345b6h"
   }
 }
 ]

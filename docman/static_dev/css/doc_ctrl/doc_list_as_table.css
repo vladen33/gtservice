@@ -1,0 +1,111 @@
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.doc-table th,
+.doc-table td {
+  border: 1px solid #888;
+  padding: 4px 8px;
+}
+
+.doc-table th {
+  background-color: #f5f5f5;
+  position: sticky;
+  text-align: center;
+  top: 0;
+  z-index: 10;
+}
+
+.table-resp-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.table-resp-card {
+  padding: 2px;
+  border: 1px solid #888;
+  border-radius: 4px;
+}
+
+.table-resp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 2px;
+}
+
+.table-resp-name {
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.table-resp-role {
+  color: #555;
+  font-size: 0.7rem;
+  background: #eef2f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.table-resp-task {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.table-resp-label {
+  font-size: 0.8rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.table-resp-value {
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.table-resp-absence {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #bbb;
+}
+
+.table-actions-column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;                  /* расстояние между кнопками */
+  align-items: stretch;       /* растягивает все кнопки на одну ширину */
+}
+
+.table-row-btn {
+  flex: 1;
+  padding: 2px;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.action-view {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #2e7d32;          /* тёмная зелёная граница */
+}
+
+.action-edit {
+  background-color: #fff3e0;
+  color: #795548;                     /* тёмно‑коричневый текст */
+  border: 1px solid #795548;          /* тёмная коричневая граница — акцент на редактировании */
+}
+
+.action-delete {
+  background-color: #ffebee;
+  color: #b71c1c;
+  border: 1px solid #b71c1c;          /* максимально тёмная красная граница */
+}
