@@ -1,0 +1,364 @@
+[
+{
+  "model": "doc_ctrl.doctype",
+  "pk": 1,
+  "fields": {
+    "type": "Приказ"
+  }
+},
+{
+  "model": "doc_ctrl.doctype",
+  "pk": 2,
+  "fields": {
+    "type": "Распоряжение"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 1,
+  "fields": {
+    "number": "02ПР-0001",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О назначении ответственных за приемку изделий",
+    "summary": "О назначении ответственных за приемку изделий",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:09:00.890Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 2,
+  "fields": {
+    "number": "02ПР-0002",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О режиме работы",
+    "summary": "Устанавливает режим работы и контроль за его соблюдением",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 3,
+  "fields": {
+    "number": "02ПР-0003",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О назначении отв. за пожарную безопасность",
+    "summary": "Назначить Иванова И.И. ответственным за пожарную безопасность на участке №1",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 4,
+  "fields": {
+    "number": "02ПР-0004",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "Об ответственном за электрохозяйство",
+    "summary": "Петров П.П. назначен ответственным за электрохозяйство цеха сборки",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 5,
+  "fields": {
+    "number": "02ПР-0005",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О контроле охраны труда",
+    "summary": "Сидоров С.С. назначен ответственным за контроль охраны труда в отделе логистики",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 6,
+  "fields": {
+    "number": "02ПР-0006",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "#",
+    "summary": "*",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 7,
+  "fields": {
+    "number": "02ПР-0007",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О сохранности ТМЦ на складе",
+    "summary": "Морозов М.М. назначен ответственным за сохранность ТМЦ на основном складе",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 8,
+  "fields": {
+    "number": "02ПР-0008",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "Об организации пропускного режима",
+    "summary": "Новикова Н.Н. назначена ответственной за пропускной режим на КПП №2",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 9,
+  "fields": {
+    "number": "02ПР-0009",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О контроле качества продукции",
+    "summary": "Фёдоров Ф.Ф. назначен ответственным за контроль качества на линии №3",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 10,
+  "fields": {
+    "number": "02ПР-00010",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О ведении журнала инструктажей",
+    "summary": "Егорова Е.Е. назначена ответственной за ведение журнала вводных инструктажей",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 11,
+  "fields": {
+    "number": "02ПР-00011",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О технической эксплуатации оборудования",
+    "summary": "Волков В.В. назначен ответственным за техэксплуатацию оборудования цеха №4",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 12,
+  "fields": {
+    "number": "02ПР-00013",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О соблюдении санитарных норм",
+    "summary": "Михайлова М.М. назначена ответственной за соблюдение санитарных норм в столовой",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 13,
+  "fields": {
+    "number": "02ПР-00013",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О контроле сроков исполнения документов",
+    "summary": "Орлова О.О. назначена ответственной за контроль сроков исполнения входящих документов",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 14,
+  "fields": {
+    "number": "02ПР-00014",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О ведении архива документов",
+    "summary": "Павлов П.П. назначен ответственным за ведение архива и хранение дел",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 15,
+  "fields": {
+    "number": "02ПР-00015",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О координации работы подрядчиков",
+    "summary": "Семёнов С.С. назначен ответственным за координацию работы подрядных организаций",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.doc",
+  "pk": 16,
+  "fields": {
+    "number": "02ПР-00016",
+    "date": "2026-08-31",
+    "doc_type": 1,
+    "title": "О мониторинге энергопотребления",
+    "summary": "Титова Т.Т. назначена ответственной за мониторинг энергопотребления объектов",
+    "valid_from_date": "2026-08-31",
+    "valid_to_date": "9999-01-01",
+    "status": "active",
+    "created_at": "2026-08-31T07:15:26.363Z"
+  }
+},
+{
+  "model": "doc_ctrl.person",
+  "pk": 1,
+  "fields": {
+    "last_name": "Иванов",
+    "first_name": "Иван",
+    "middle_name": "Иванович",
+    "position": "Начальник"
+  }
+},
+{
+  "model": "doc_ctrl.person",
+  "pk": 2,
+  "fields": {
+    "last_name": "Петров",
+    "first_name": "Петр",
+    "middle_name": "Петроывич",
+    "position": "Заместитель"
+  }
+},
+{
+  "model": "doc_ctrl.person",
+  "pk": 3,
+  "fields": {
+    "last_name": "Королев",
+    "first_name": "Алексей",
+    "middle_name": "Иванович",
+    "position": "Главный инженер"
+  }
+},
+{
+  "model": "doc_ctrl.person",
+  "pk": 4,
+  "fields": {
+    "last_name": "Лапин",
+    "first_name": "Владимир",
+    "middle_name": "Сергеевич",
+    "position": "Технолог"
+  }
+},
+{
+  "model": "doc_ctrl.person",
+  "pk": 5,
+  "fields": {
+    "last_name": "Максимова",
+    "first_name": "Лариса",
+    "middle_name": "Петровна",
+    "position": "Начальник отдела кадров"
+  }
+},
+{
+  "model": "doc_ctrl.person",
+  "pk": 6,
+  "fields": {
+    "last_name": "Бунин",
+    "first_name": "Евгений",
+    "middle_name": "Викторович",
+    "position": "Директор"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 1,
+  "fields": {
+    "doc": 1,
+    "person": 4,
+    "role": "Приемщик",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "Принимать готовые изделия"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 2,
+  "fields": {
+    "doc": 1,
+    "person": 1,
+    "role": "Главный приемщик",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "Контролировать прием готовых изделий"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 3,
+  "fields": {
+    "doc": 2,
+    "person": 5,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "Контролирует график работы сотрудников"
+  }
+},
+{
+  "model": "doc_ctrl.docresponsible",
+  "pk": 4,
+  "fields": {
+    "doc": 2,
+    "person": 6,
+    "role": "",
+    "is_indefinite": true,
+    "deadline": null,
+    "task": "Подписывает приказы о сверхурочной работе"
+  }
+}
+]

@@ -62,18 +62,6 @@ textarea[name="responsibles_task[]"] {
   min-height: 3rem;   /* минимальная высота, чтобы ячейка не схлопывалась */
 }
 
-.status-badge {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 0.85rem;
-}
-
-/* Пример цветов для статусов (подстрой под свои OrdStatus) */
-.status-active { background-color: #d4edda; color: #155724; }
-.status-cancelled { background-color: #f8d7da; color: #721c24; }
-.status-modified { background-color: #d6c03a; color: #572500; }
-
 .btn-edit, .btn-view {
   text-decoration: none;
   padding: 6px 12px;

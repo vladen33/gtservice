@@ -1,94 +1,88 @@
-<div class="ord-list-container">
-<!--  <div class="action-button-container">-->
-<!--    <a href="{% url 'doc_ctrl:doc_create' %}"><button type="button" class="action-button">Добавить документ</button></a>-->
-<!--    <a href="#"><button type="button" class="action-button">Справка</button></a>-->
-<!--  </div>-->
-  <table class="ord-table">
-    <thead>
+<table class="ord-table">
+  <thead>
+    <tr>
+      <th>Статус</th>
+      <th>Тип</th>
+      <th>Номер</th>
+      <th>Дата</th>
+      <th>Наименование</th>
+      <th>Действует с</th>
+      <th>Действует до</th>
+      <th>Ответственные</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for doc in docs %}
       <tr>
-        <th>Статус</th>
-        <th>Тип</th>
-        <th>Номер</th>
-        <th>Дата</th>
-        <th>Наименование</th>
-        <th>Действует с</th>
-        <th>Действует до</th>
-        <th>Ответственные</th>
-        <th>Действия</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for doc in docs %}
-        <tr>
-          <td>
-            <span class="status-badge status-{{ doc.status|lower }}">
-              {{ doc.get_status_display }}
-            </span>
-          </td>
+        <td>
+          <span class="status-badge status-{{ doc.status|lower }}">
+            {{ doc.get_status_display }}
+          </span>
+        </td>
 
-          <td>{{ doc.doc_type.name }}</td>
-          <td>{{ doc.number }}</td>
-          <td>{{ doc.date|date:"d.m.Y" }}</td>
-          <td>{{ doc.title }}</td>
+        <td>{{ doc.doc_type.name }}</td>
+        <td>{{ doc.number }}</td>
+        <td>{{ doc.date|date:"d.m.Y" }}</td>
+        <td>{{ doc.title }}</td>
 
-          <td>{{ doc.valid_from_date|date:"d.m.Y" }}</td>
-          <td>{{ doc.valid_to_date|date:"d.m.Y" }}</td>
-          <td>
-            {% if doc.responsibles.all %}
-              <div class="responsibles-cards">
-                {% for resp in doc.responsibles.all %}
-                  <div class="resp-card">
-                    <div class="resp-header">
-                      <span class="resp-name">{{ resp.person.full_name_initials }}</span>
-                      <span class="resp-role">{{ resp.role|default:"—" }}</span>
+        <td>{{ doc.valid_from_date|date:"d.m.Y" }}</td>
+        <td>{{ doc.valid_to_date|date:"d.m.Y" }}</td>
+        <td>
+          {% if doc.responsibles.all %}
+            <div class="responsibles-cards">
+              {% for resp in doc.responsibles.all %}
+                <div class="resp-card">
+                  <div class="resp-header">
+                    <span class="resp-name">{{ resp.person.full_name_initials }}</span>
+                    <span class="resp-role">{{ resp.role|default:"—" }}</span>
+                  </div>
+
+                  <div class="resp-body">
+                    <div class="resp-row">
+                      <span class="label">Комментарий:</span>
+                      <span class="value">
+                        {% if resp.task %}
+                          {{ resp.task|truncatechars:60 }}
+                        {% else %}
+                          — не установлено
+                        {% endif %}
+                      </span>
                     </div>
 
-                    <div class="resp-body">
-                      <div class="resp-row">
-                        <span class="label">Комментарий:</span>
-                        <span class="value">
-                          {% if resp.task %}
-                            {{ resp.task|truncatechars:60 }}
-                          {% else %}
-                            — не установлено
-                          {% endif %}
-                        </span>
-                      </div>
-
-                      <div class="resp-row">
-                        <span class="label">Срок:</span>
-                        <span class="value">
-                          {% if resp.is_indefinite %}
-                            бессрочно
-                          {% elif resp.deadline %}
-                            {{ resp.deadline|date:"d.m.Y" }}
-                          {% else %}
-                            — не установлен
-                          {% endif %}
-                        </span>
-                      </div>
+                    <div class="resp-row">
+                      <span class="label">Срок:</span>
+                      <span class="value">
+                        {% if resp.is_indefinite %}
+                          бессрочно
+                        {% elif resp.deadline %}
+                          {{ resp.deadline|date:"d.m.Y" }}
+                        {% else %}
+                          — не установлен
+                        {% endif %}
+                      </span>
                     </div>
                   </div>
-                {% endfor %}
-              </div>
-            {% else %}
-              Нет ответственных
-            {% endif %}
-          </td>
-
-          <td class="actions-cell">
-            <div class="actions-column">
-              <a href="{% url 'doc_ctrl:doc_detail' doc.pk %}" class="action-btn action-view">просмотр</a>
-              <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="action-btn action-edit">ред.</a>
-              <a href="{% url 'doc_ctrl:doc_delete' doc.pk %}" class="action-btn action-delete">удалить</a>
+                </div>
+              {% endfor %}
             </div>
-          </td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="11" class="no-data">Нет документов</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+          {% else %}
+            Нет ответственных
+          {% endif %}
+        </td>
+
+        <td class="actions-cell">
+          <div class="actions-column">
+            <a href="{% url 'doc_ctrl:doc_detail' doc.pk %}" class="action-btn action-view">просмотр</a>
+            <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="action-btn action-edit">ред.</a>
+            <a href="{% url 'doc_ctrl:doc_delete' doc.pk %}" class="action-btn action-delete">удалить</a>
+          </div>
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="11" class="no-data">Нет документов</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

@@ -1,56 +1,52 @@
-<div class="ord-list-container">
-  <div class="ords-grid">
-    {% for doc in docs %}
-      <div class="ord-card">
+<div class="ords-grid">
+  {% for doc in docs %}
+    <div class="ord-card">
 
-        <!-- Верхняя полоса: Статус + Тип + Номер -->
-        <div class="card-header">
-          <span class="status-badge status-{{ doc.status|lower }}">
-            {{ doc.get_status_display }}
-          </span>
-          <span class="card-type">{{ doc.doc_type.name }}</span>
-          <div>
-            <strong class="card-number">№{{ doc.number }}</strong>
-            <div><span>от</span> {{ doc.date|date:"d.m.Y" }}</div>
-          </div>
+      <!-- Верхняя полоса: Статус + Тип + Номер -->
+      <div class="card-header">
+        <span class="status-badge status-{{ doc.status|lower }}">
+          {{ doc.get_status_display }}
+        </span>
+        <span class="card-type">{{ doc.doc_type.type }}</span>
+        <div>
+          <strong class="card-number">№{{ doc.number }}</strong>
+          <div class="card-date">от {{ doc.date|date:"d.m.Y" }}</div>
         </div>
-
-        <!-- Основная информация -->
-        <div class="card-body">
-          <h3 class="card-title">{{ doc.title }}</h3>
-
-          <div class="card-meta">
-
-            <div><span>Период:</span>
-              {% if doc.valid_from_date %}{{ doc.valid_from_date|date:"d.m.Y" }}{% else %}—{% endif %}
-              —
-              {% if doc.valid_to_date %}{{ doc.valid_to_date|date:"d.m.Y" }}{% else %}—{% endif %}
-            </div>
-          </div>
-
-          <!-- Ответственные (твои карточки) -->
-          <div class="card-responsibles">
-             {% if doc.responsibles.all %}
-               {% for resp in doc.responsibles.all %}
-                 <div class="resp-chip">
-                   {{ resp.person.full_name_initials }}
-                   <small>({{ resp.role|truncatechars:10 }})</small>
-                 </div>
-               {% endfor %}
-             {% else %}
-               <span class="text-muted">Нет ответственных</span>
-             {% endif %}
-          </div>
-        </div>
-
-        <!-- Действия внизу карточки -->
-        <div class="card-actions">
-          <a href="{% url 'doc_ctrl:doc_detail' doc.pk %}" class="btn-sm btn-view">Просмотр</a>
-          <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="btn-sm btn-edit">Ред.</a>
-          <a href="{% url 'doc_ctrl:doc_delete' doc.pk %}" class="btn-sm btn-delete">Удалить</a>
-        </div>
-
       </div>
-    {% endfor %}
-  </div>
+
+      <!-- Основная информация -->
+      <div class="card-body">
+        <h3 class="card-title">{{ doc.title }}</h3>
+
+        <div class="card-period">
+          Период:
+            {% if doc.valid_from_date %}{{ doc.valid_from_date|date:"d.m.Y" }}{% else %}—{% endif %}
+            —
+            {% if doc.valid_to_date %}{{ doc.valid_to_date|date:"d.m.Y" }}{% else %}—{% endif %}
+        </div>
+
+        <!-- Ответственные (твои карточки) -->
+        <div class="card-responsibles">
+           {% if doc.responsibles.all %}
+             {% for resp in doc.responsibles.all %}
+               <div class="resp-chip">
+                 {{ resp.person.full_name_initials }}
+                 <small>({{ resp.role|truncatechars:10 }})</small>
+               </div>
+             {% endfor %}
+           {% else %}
+             <span class="resp-absence">Нет ответственных</span>
+           {% endif %}
+        </div>
+      </div>
+
+      <!-- Действия внизу карточки -->
+      <div class="card-actions">
+        <a href="{% url 'doc_ctrl:doc_detail' doc.pk %}" class="btn-sm btn-view">Подробнее...</a>
+        <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="btn-sm btn-edit">Редактировать</a>
+        <a href="{% url 'doc_ctrl:doc_delete' doc.pk %}" class="btn-sm btn-delete">Удалить</a>
+      </div>
+
+    </div>
+  {% endfor %}
 </div>

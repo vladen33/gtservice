@@ -9,20 +9,22 @@
     {% endblock %}
   </head>
   <body class="body">
-    <header class="header">
-      {% block header %}
-        <p class="header-title">Контроль исполнения документов</p>
-      {% endblock %}
-    </header>
-    <main class="main">
-      {% block main %}
-        <h1>Здесь будет основной контент...</h1>
-      {% endblock %}
-    </main>
-    <footer class="footer">
-      {% block footer %}
-        <h2>Подвал страницы</h2>
-      {% endblock %}
-    </footer>
+    <div class="page-wrapper">
+      <header class="header">
+        {% block header %}
+          <p class="header-title">Контроль исполнения документов</p>
+        {% endblock %}
+      </header>
+      <main class="main">
+        {% block main %}
+          <h1>Здесь будет основной контент...</h1>
+        {% endblock %}
+      </main>
+      <footer class="footer">
+        {% block footer %}
+          <h2>Подвал страницы</h2>
+        {% endblock %}
+      </footer>
+    </div>
   </body>
 </html>

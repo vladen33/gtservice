@@ -1,90 +1,54 @@
-.body {
+/* Сброс отступов у страницы — обязательно */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Запрещаем скролл всей страницы */
+}
+
+/* Основной контейнер-обёртка */
+.page-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  justify-content: space-between;
-  width: calc(100vw - 4px);
-  height: calc(100vh - 4px);
-  margin: 2px;
-  background-color: burlywood;
+  height: 100vh; /* Занимает весь экран */
+  width: 100vw;
+  box-sizing: border-box; /* Чтобы padding/border не ломали размеры */
 }
 
 .header,
 .main,
 .footer {
+  margin: 2px;
+}
+
+/* Шапка и подвал: не сжимаются, фиксированная высота */
+.header,
+.footer {
+  flex-shrink: 0;
+  height: 32px;
   background-color: beige;
   border: 1px solid darkcyan;
   border-radius: 4px;
   padding: 0 16px;
+  display: flex;
+  align-items: center; /* Центрируем текст по вертикали */
+  box-sizing: border-box;
 }
 
-.header,
-.footer {
-  height: 26px;
-}
+/* Контент: занимает всё оставшееся место, только здесь скролл */
 .main {
-  flex-grow: 1; /* занимает всё свободное место */
-  height: auto;
+  flex: 1;
+  overflow-y: auto; /* Вертикальный скролл при необходимости */
+  background-color: beige;
+  border: 1px solid darkcyan;
+  border-radius: 4px;
+  padding: 4px;
+  box-sizing: border-box;
+  min-height: 0; /* Предотвращает расширение flex-элемента из-за overflow */
 }
-
 
 .header-title {
   font-size: 20px;
   font-weight: 700;
+  margin: 0;
 }
-/*.header__menu {*/
-/*  display: flex;*/
-/*  flex-direction: row;*/
-/*  gap: 20px;*/
-/*  list-style: none;*/
-/*  margin: 8px auto;*/
-/*}*/
-
-/*.messages {*/
-/*  list-style: none;*/
-/*  font-size: 10px;*/
-/*  padding: 0;*/
-/*  margin: 0;*/
-/*}*/
-
-/*.message {*/
-/*  padding: 10px;*/
-/*  margin-bottom: 10px;*/
-/*  border-radius: 4px;*/
-/*}*/
-
-/*.message.error {*/
-/*  background-color: #fee;*/
-/*  color: #900;*/
-/*  border: 1px solid #ecc;*/
-/*}*/
-
-/*.message.success {*/
-/*  background-color: #efe;*/
-/*  color: #060;*/
-/*  border: 1px solid #cce;*/
-/*}*/
-
-
-/*.ord-container {*/
-/*  display: flex;*/
-/*  flex-direction: row;*/
-/*  gap: 2px;*/
-/*  height: 100%;*/
-/*}*/
-
-/*.ord-aside-panel {*/
-/*  width: 150px;*/
-/*  flex-shrink: 0;*/
-/*  flex-grow: 0;*/
-/*  background-color: beige;*/
-/*  border: 1px solid darkcyan;*/
-/*  border-radius: 4px;*/
-/*}*/
-
-/*.ord-content-panel {*/
-/*  flex-grow: 1;*/
-/*  background-color: beige;*/
-/*  border: 1px solid darkcyan;*/
-/*  border-radius: 4px;*/
-/*}*/

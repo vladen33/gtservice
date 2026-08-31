@@ -1,11 +1,14 @@
-{% extends "ordcontrol/ord_base.html" %}
+{% extends "doc_ctrl/doc_base.html" %}
+{% load static %}
 
-{% block aside_panel %}
-Здесь пока ничего нет!!!
+{% block links %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_create-edit.css' %}">
 {% endblock %}
 
-{% block ord_content %}
-  <div class="ord-create-container">
+
+{% block main %}
+  <div class="doc-create-container">
     <h1>Создать новый документ (ОРД)</h1>
 
     <form id="ord-form" method="post">
@@ -51,7 +54,7 @@
           </tbody>
         </table>
     </fieldset>
-      <a href="{% url 'ordcontrol:ord_list' %}">
+      <a href="{% url 'doc_ctrl:doc_list' %}">
         <button type="button" class="ord-menu-button">
           Отменить
         </button>
@@ -63,7 +66,7 @@
   </div>
 
   <!--Подключаем template для строки с ответственным и JavaScript-->
-  {% include 'ordcontrol/includes/responsibles_table_row.html' %}
+  {% include 'doc_ctrl/includes/responsibles_table_row.html' %}
 
 </div>
 {% endblock %}

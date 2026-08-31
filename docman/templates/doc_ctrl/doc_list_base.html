@@ -15,7 +15,7 @@
     <a href="{% url 'doc_ctrl:doc_create' %}"><button type="button" class="action-button">Добавить документ</button></a>
     <a href="#"><button type="button" class="action-button">Справка</button></a>
   </div>
-  <div class="list-container">
+  <div class="doc-list-container">
     {% if view_mode == 'table' %}
       {% include 'doc_ctrl/doc_list_as_table.html' %}
     {% else %}
