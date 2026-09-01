@@ -1,0 +1,76 @@
+{% extends "doc_ctrl/doc_base.html" %}
+{% load static %}
+
+{% block links %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_form.css' %}">
+{% endblock %}
+
+
+{% block main %}
+  <div class="doc-container">
+    {% if is_create %}
+      <h1>Добавить новый документ</h1>
+    {% else %}
+      <h1>Редактирование документа</h1>
+    {% endif %}
+
+    <form id="doc-form" method="post">
+      {% csrf_token %}
+
+      <!-- Поля документа из таблицы 'doc' -->
+    <fieldset class="doc-form-section">
+      <legend>Данные документа</legend>
+        <table>
+          {{ form.as_table }}
+        </table>
+    </fieldset>
+
+      <!-- Блок ответственных: OrdResponsible -->
+    <fieldset class="doc-form-section">
+      <legend>Ответственные лица</legend>
+        <table class="ord-table">
+          <colgroup>
+            <col style="width: 15%;">   <!-- Ответственное лицо -->
+            <col style="width: 20%;">   <!-- Роль -->
+            <col style="width: 40%;">   <!-- Задача -->
+            <col style="width: 5%;">   <!-- Бессрочно -->
+            <col style="width: 10%;">   <!-- Срок исполнения -->
+            <col style="width: 10%;">    <!-- Кнопка Удалить -->
+          </colgroup>
+          <thead>
+            <tr>
+              <th>
+                Ответственный (NEW)
+                <button type="button" id="add-responsible-btn">
+                  +
+                </button>
+              </th>
+              <th>Роль</th>
+              <th>Задача</th>
+              <th>Бессрочно</th>
+              <th>Срок исполнения</th>
+              <th>Кнопки</th>
+            </tr>
+          </thead>
+          <tbody id="responsibles-body">
+            <!-- Строки будут добавляться JS или вручную при рендере -->
+          </tbody>
+        </table>
+    </fieldset>
+      <a href="{% url 'doc_ctrl:doc_list' %}">
+        <button type="button">
+          Отменить
+        </button>
+      </a>
+      <button type="submit">
+        Создать новый документ
+      </button>
+    </form>
+  </div>
+
+  <!--Подключаем template для строки с ответственным и JavaScript-->
+  {% include 'doc_ctrl/includes/responsibles_table_row.html' %}
+
+</div>
+{% endblock %}
