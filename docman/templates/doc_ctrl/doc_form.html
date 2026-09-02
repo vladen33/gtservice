@@ -9,10 +9,10 @@
 
 {% block main %}
   <div class="doc-container">
-    {% if is_create %}
-      <h1>Добавить новый документ</h1>
-    {% else %}
+    {% if is_edit %}
       <h1>Редактирование документа</h1>
+    {% else %}
+      <h1>Добавить новый документ</h1>
     {% endif %}
 
     <form id="doc-form" method="post">
@@ -29,7 +29,7 @@
       <!-- Блок ответственных: OrdResponsible -->
     <fieldset class="doc-form-section">
       <legend>Ответственные лица</legend>
-        <table class="ord-table">
+        <table class="doc-table">
           <colgroup>
             <col style="width: 15%;">   <!-- Ответственное лицо -->
             <col style="width: 20%;">   <!-- Роль -->
@@ -54,7 +54,66 @@
             </tr>
           </thead>
           <tbody id="responsibles-body">
-            <!-- Строки будут добавляться JS или вручную при рендере -->
+            <!-- Если responsibles содержит ответственных, то они добавляются на страницу при рендере на сервере -->
+            <!-- на клиенте они добавляются или удаляются пользователем при помощи JavaScript -->
+            {% if responsibles %}
+              {% for resp in responsibles %}
+                <tr class="responsible-row">
+                  <td>
+                    <select name="responsibles_person[]" class="width100">
+                      {% for person in people %}
+                        <option
+                          value="{{ person.id }}"
+                          {% if person.id == resp.person_id %} selected {% endif %}
+                        >
+                          {{ person.full_name_initials }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      name="responsibles_role[]"
+                      placeholder="Например: контролёр"
+                      value="{{ resp.role }}"
+                      class="width100"
+                      required
+                    >
+                  </td>
+                  <td><textarea name="responsibles_task[]" rows="2" class="width100">{{ resp.task|default:"" }}</textarea></td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      {% if resp.is_indefinite %} checked {% endif %}
+                      value=""
+                      onchange="toggleDeadline(this)"
+                    >
+                  </td>
+                  <td>
+                    <input
+                      type="hidden"
+                      name="responsibles_deadline[]"
+                      class="deadline-hidden-field"
+                      value="{{ resp.deadline|date:'Y-m-d' }}"
+                    >
+                    <input
+                      type="date"
+                      class="deadline-date-field"
+                      disabled
+                      onchange="addDateToHidden(this, this.previousElementSibling)"
+                      value="{{ resp.deadline|date:'Y-m-d' }}"
+                    >
+                  </td>
+
+                  <td>
+                    <button type="button" class="remove-row-btn">
+                      Удалить
+                    </button>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% endif %}
           </tbody>
         </table>
     </fieldset>
@@ -64,13 +123,110 @@
         </button>
       </a>
       <button type="submit">
-        Создать новый документ
+        {% if is_edit %}
+          Сохранить изменения
+        {% else %}
+          Создать новый документ
+        {% endif %}
       </button>
     </form>
   </div>
 
-  <!--Подключаем template для строки с ответственным и JavaScript-->
-  {% include 'doc_ctrl/includes/responsibles_table_row.html' %}
+  <template id="responsible-row-template">
+    <tr class="responsible-row">
+      <td>
+        <select name="responsibles_person[]" required class="width100">
+          <option value="" disabled selected>Выберите ответственное лицо</option>
+          {% for person in people %}
+            <option value="{{ person.id }}">{{ person.full_name_initials }}</option>
+          {% endfor %}
+        </select>
+      </td>
+      <td>
+        <input type="text" name="responsibles_role[]" placeholder="Например: контролёр" required class="role-field">
+      </td>
+      <td>
+        <textarea name="responsibles_task[]" rows="2" class="task-field"></textarea>
+      </td>
+      <td>
+        <input
+          type="checkbox"
+          checked
+          onchange="toggleDeadline(this)"
+        >
+      </td>
+      <td>
+        <input
+          type="hidden"
+          name="responsibles_deadline[]"
+          class="deadline-hidden-field"
+          value=""
+        >
+        <input
+          type="date"
+          class="deadline-date-field"
+          disabled
+          onchange="addDateToHidden(this, this.previousElementSibling)"
+        >
+      </td>
+      <td>
+        <button type="button" class="remove-row-btn">
+          Удалить
+        </button>
+      </td>
+    </tr>
+  </template>
+
+  <script>
+    // Простой JS для добавления/удаления строк без перезагрузки
+    const respBody = document.getElementById('responsibles-body');
+    const respRowTemplate = document.getElementById('responsible-row-template').content;
+    const addRespBtn = document.getElementById('add-responsible-btn');
+
+    function addRow() {
+      const clone = respRowTemplate.cloneNode(true);
+      const deadline = clone.querySelector('input[name="responsibles_deadline[]"]');
+      deadline.value = '';
+      respBody.appendChild(clone.firstElementChild);
+    }
+
+    addRespBtn.addEventListener('click', addRow);
+
+    respBody.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-row-btn')) {
+        const row = e.target.closest('.responsible-row');
+        if (respBody.children.length > 0) {
+          row.remove();
+        }
+      }
+    });
+
+    function addDateToHidden(visible_field, hidden_field) {
+        hidden_field.value = visible_field.value;
+    }
+
+
+    // Опционально: валидация перед отправкой
+    document.getElementById('doc-form').addEventListener('submit', (e) => {
+      // Можно добавить свою валидацию, если нужно
+    });
+
+    function toggleDeadline(cb) {
+      const row = cb.closest('.responsible-row');
+      const dateInput = row.querySelector('.deadline-date-field');
+      const dateHiddenInput = row.querySelector('.deadline-hidden-field');
+      if (!dateInput) return;
+      if (cb.checked) {
+        dateInput.disabled = true;
+        dateInput.value = '';
+        dateHiddenInput.value = '';
+      } else {
+        dateInput.disabled = false;
+        dateInput.value = new Date().toISOString().split('T')[0];
+        dateHiddenInput.value = dateInput.value;
+      }
+    }
+  </script>
 
 </div>
 {% endblock %}

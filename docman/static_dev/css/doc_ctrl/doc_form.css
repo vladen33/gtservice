@@ -10,6 +10,10 @@
   margin-bottom: 8px;
 }
 
+.doc-table {
+  border: 2px solid #aaa;
+}
+
 .role-field {
   width: 100%;
 }

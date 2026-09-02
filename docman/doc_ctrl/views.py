@@ -1,11 +1,16 @@
+import logging
+
+from django.db import transaction
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+
 from .forms import DocForm, DocResponsibleForm
 from .models import Doc, DocResponsible, Person
 
 
-# Create your views here.
+logger = logging.getLogger(__name__)
+
 def doc_list(request):
     # 1. Получаем выбор пользователя из сессии; по умолчанию — 'table'
     view_mode = request.session.get('ord_view_mode', 'table')
@@ -34,167 +39,11 @@ def doc_list(request):
     return render(request, 'doc_ctrl/doc_list_base.html', context)
 
 
-def doc_create(request):
-    if request.method == 'POST':
-        form = DocForm(request.POST)
-        # Получаем списки данных из POST
-        persons = request.POST.getlist('responsibles_person[]')
-        roles = request.POST.getlist('responsibles_role[]')
-        deadlines = request.POST.getlist('responsibles_deadline[]')
-        tasks = request.POST.getlist('responsibles_tasks[]')
-
-        # Проверяем, что длины списков совпадают
-        n = len(persons)
-        if not (len(roles) == n and len(deadlines) == n and len(tasks) == n):
-            messages.error(request,
-                           'Ошибка данных: количество полей не совпадает. Обновите страницу и попробуйте снова.')
-            people = Person.objects.all()
-            return render(request, 'doc_ctrl/doc_create.html', {'form': form, 'people': people})
-
-        if form.is_valid():
-            # Сохраняем документ
-            doc_instance = form.save()
-
-            # Сохраняем ответственных в цикле
-            for i in range(n):
-                person_id = persons[i]
-                if not person_id:
-                    continue  # пропускаем пустые строки, если они есть
-                role = roles[i].strip()
-                if deadlines[i] == '':
-                    is_indefinite = True
-                    deadline = None
-                else:
-                    is_indefinite = False
-                    deadline = deadlines[i]
-                task = tasks[i].strip() or None
-
-                resp_form = DocResponsibleForm({
-                    'person': person_id,
-                    'role': role,
-                    'is_indefinite': is_indefinite,
-                    'deadline': deadline,
-                    'task': task,
-                })
-
-                if resp_form.is_valid():
-                    resp_instance = resp_form.save(commit=False)
-                    resp_instance.doc = doc_instance
-                    resp_instance.save()
-                else:
-                    # Если хоть одна строка невалидна — откатываем всё
-                    messages.error(request, f'Ошибка при сохранении ответственного #{i + 1}: {resp_form.errors}')
-                    doc_instance.delete()  # удаляем документ, если не удалось сохранить все связи
-                    people = Person.objects.all()
-                    return render(request, 'doc_ctrl/doc_create.html', {'form': form, 'people': people})
-
-            messages.success(request, 'Документ и ответственные успешно сохранены.')
-            return redirect('doc_ctrl:doc_list')
-        else:
-            people = Person.objects.all()
-            return render(request, 'doc_ctrl/doc_create.html', {'form': form, 'people': people})
-    else:
-        form = DocForm()
-        people = Person.objects.all()
-        return render(request, 'doc_ctrl/doc_create.html', {'form': form, 'people': people})
-
-
 def doc_detail(request, pk):
     instance = get_object_or_404(Doc, pk=pk)
     template_name = 'doc_ctrl/doc_detail.html'
     context = {'instance': instance}
     return render(request, template_name, context)
-
-
-def doc_edit(request, pk):
-    doc_instance = get_object_or_404(Doc, pk=pk)
-    people = Person.objects.all().order_by('last_name', 'first_name', 'middle_name')
-    responsibles = (
-        DocResponsible.objects
-        .filter(doc=doc_instance)
-        .select_related('person')
-        .order_by('role', 'person__last_name')
-    )
-
-    if request.method == 'POST':
-        form = DocForm(request.POST, instance=doc_instance)
-
-        # Получаем списки данных из POST
-        persons = request.POST.getlist('responsibles_person[]')
-        roles = request.POST.getlist('responsibles_role[]')
-        deadlines = request.POST.getlist('responsibles_deadline[]')
-        tasks = request.POST.getlist('responsibles_task[]')
-
-        n = len(persons)
-        if not (len(roles) == n and len(deadlines) == n and len(tasks) == n):
-            messages.error(request, 'Ошибка данных: количество полей не совпадает. Обновите страницу и попробуйте снова.')
-            return render(request, 'doc_ctrl/doc_edit.html', {
-                'form': form,
-                'people': people,
-                'responsibles': responsibles,
-            })
-
-        if form.is_valid():
-            # 1) Сохраняем основной документ
-            doc_instance = form.save()
-
-            # 2) Удаляем все текущие связи (перезапись)
-            DocResponsible.objects.filter(doc=doc_instance).delete()
-
-            # 3) Создаём заново из POST-данных
-            for i in range(n):
-                person_id = persons[i]
-                if not person_id:
-                    continue
-
-                role = roles[i].strip()
-                if deadlines[i] == '':
-                    is_indefinite = True
-                    deadline = None
-                else:
-                    is_indefinite = False
-                    deadline = deadlines[i]
-                task = tasks[i].strip() or None
-
-                resp_form = DocResponsibleForm({
-                    'person': person_id,
-                    'role': role,
-                    'is_indefinite': is_indefinite,
-                    'deadline': deadline,
-                    'task': task,
-                })
-
-                if resp_form.is_valid():
-                    resp_instance = resp_form.save(commit=False)
-                    resp_instance.ord = doc_instance
-                    resp_instance.save()
-                else:
-                    messages.error(request, f'Ошибка при сохранении ответственного #{i + 1}: {resp_form.errors}')
-                    # Откат: удаляем созданные строки и сам документ (если нужно)
-                    # OrdResponsible.objects.filter(ord=ord_instance).delete()
-                    return render(request, 'doc_ctrl/doc_edit.html', {
-                        'form': form,
-                        'people': people,
-                        'responsibles': responsibles,
-                    })
-
-            messages.success(request, 'Документ и ответственные успешно обновлены.')
-            return redirect('doc_ctrl:doc_list')
-        else:
-            # Форма DocForm невалидна: показываем ошибки
-            return render(request, 'doc_ctrl/doc_edit.html', {
-                'form': form,
-                'people': people,
-                'responsibles': responsibles,
-            })
-    else:
-        form = DocForm(instance=doc_instance)
-
-    return render(request, 'doc_ctrl/doc_edit.html', {
-        'form': form,
-        'people': people,
-        'responsibles': responsibles,
-    })
 
 
 def doc_delete(request, pk):
@@ -209,107 +58,103 @@ def doc_delete(request, pk):
     }
     return render(request, 'doc_ctrl/doc_delete.html', context)
 
+
 def doc_create_or_edit(request, pk=None):
+    is_edit = bool(pk)
     doc_instance = None
-    is_edit = None
-    is_create = None    # Этот признак избыточен, но для наглядности пусть будет - потом его убрать
+    people = Person.objects.all().order_by('last_name', 'first_name', 'middle_name')
+    responsibles = []
 
-    if pk:  # Если pk передан в функцию, то мы редактируем имеющийся документ
-        is_edit = True
-        is_create = False
+    if is_edit:
         doc_instance = get_object_or_404(Doc, pk=pk)
-        if request.method == 'POST':
-            pass
-        else: # Если переданный метод = GET
-            pass
+        responsibles = (
+            DocResponsible.objects
+            .filter(doc=doc_instance)
+            .select_related('person')
+            .order_by('role', 'person__last_name')
+        )
 
-    else:   # Если же pk не передан, то мы создаем новый документ
-        is_edit = False
-        is_create = True
-        if request.method == 'POST':
-            form = DocForm(request.POST)
-            # Получаем списки данных из POST
-            persons = request.POST.getlist('responsibles_person[]')
-            roles = request.POST.getlist('responsibles_role[]')
-            deadlines = request.POST.getlist('responsibles_deadline[]')
-            tasks = request.POST.getlist('responsibles_task[]')
+    if request.method == 'POST':
+        logger.info('--- %s документа ---', 'Редактирование' if is_edit else 'Создание')
+        logger.info('ID = %s, метод = %s', pk or 'новый', request.method)
 
-            # Проверяем, что длины списков совпадают
-            n = len(persons)
-            if not (len(roles) == n and len(deadlines) == n and len(tasks) == n):
-                messages.error(request,
-                               'Ошибка данных: количество полей не совпадает. Обновите страницу и попробуйте снова.')
-                people = Person.objects.all()
-                return render(request, 'doc_ctrl/doc_create.html', {'form': form, 'people': people})
+        form = DocForm(request.POST, instance=doc_instance)
 
-            if form.is_valid():
-                # Сохраняем документ
+        persons = request.POST.getlist('responsibles_person[]')
+        roles = request.POST.getlist('responsibles_role[]')
+        deadlines = request.POST.getlist('responsibles_deadline[]')
+        tasks = request.POST.getlist('responsibles_task[]')
+
+        n = len(persons)
+        if not (len(roles) == n and len(deadlines) == n and len(tasks) == n):
+            logger.error("Ошибка данных: количество полей не совпадает.")
+            messages.error(request, "Ошибка данных: количество полей не совпадает.")
+            return redirect('doc_ctrl:doc_list')
+
+        if not form.is_valid():
+            logger.error('Форма DocForm невалидна')
+            return render(request, 'doc_ctrl/doc_form.html', {
+                'form': form,
+                'people': people,
+                'is_edit': is_edit,
+                'responsibles': responsibles,
+            })
+
+        try:
+            with transaction.atomic():
                 doc_instance = form.save()
+                DocResponsible.objects.filter(doc=doc_instance).delete()
 
-                # Сохраняем ответственных в цикле
                 for i in range(n):
                     person_id = persons[i]
                     if not person_id:
-                        continue  # пропускаем пустые строки, если они есть
-                    role = roles[i].strip()
-                    if deadlines[i] == '':
-                        is_indefinite = True
-                        deadline = None
-                    else:
-                        is_indefinite = False
-                        deadline = deadlines[i]
-                    task = tasks[i].strip() or None
+                        continue
+
+                    deadline = deadlines[i] or None
+                    is_indefinite = deadline is None
 
                     resp_form = DocResponsibleForm({
                         'person': person_id,
-                        'role': role,
+                        'role': roles[i].strip(),
                         'is_indefinite': is_indefinite,
                         'deadline': deadline,
-                        'task': task,
+                        'task': tasks[i].strip() or None,
                     })
 
-                    if resp_form.is_valid():
-                        resp_instance = resp_form.save(commit=False)
-                        resp_instance.doc = doc_instance
-                        resp_instance.save()
-                    else:
-                        # Если хоть одна строка невалидна — откатываем всё
-                        messages.error(request, f'Ошибка при сохранении ответственного #{i + 1}: {resp_form.errors}')
-                        doc_instance.delete()  # удаляем документ, если не удалось сохранить все связи
-                        people = Person.objects.all()
-                        return render(request, 'doc_ctrl/doc_create.html', {'form': form, 'people': people})
+                    if not resp_form.is_valid():
+                        logger.error(
+                            'Ошибка в строке #%d: %s',
+                            i + 1, resp_form.errors.as_text(),
+                        )
+                        raise ValueError(f'Ошибка в строке {i + 1}')
 
-                messages.success(request, 'Документ и ответственные успешно сохранены.')
-                return redirect('doc_ctrl:doc_list')
-            else:
-                people = Person.objects.all()
-                return render(request, 'doc_ctrl/doc_create.html', {'form': form, 'people': people})
-        else: # Если переданный метод = GET
-            form = DocForm()
-            people = Person.objects.all()
-            context = {'form': form, 'people': people, 'is_edit': is_edit, 'is_create': is_create}
-            return render(request, 'doc_ctrl/doc_form.html', context)
+                    resp_instance = resp_form.save(commit=False)
+                    resp_instance.doc = doc_instance
+                    resp_instance.save()
 
+        except ValueError:
+            messages.error(
+                request,
+                'Ошибка при сохранении ответственных. Проверьте введённые данные.'
+            )
+            return render(request, 'doc_ctrl/doc_form.html', {
+                'form': form,
+                'people': people,
+                'is_edit': is_edit,
+                'responsibles': responsibles,
+            })
 
+        messages.success(
+            request,
+            'Документ успешно обновлён.' if is_edit else 'Документ успешно создан.'
+        )
+        return redirect('doc_ctrl:doc_list')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # GET
+    form = DocForm(instance=doc_instance)
+    return render(request, 'doc_ctrl/doc_form.html', {
+        'form': form,
+        'people': people,
+        'is_edit': is_edit,
+        'responsibles': responsibles,
+    })
