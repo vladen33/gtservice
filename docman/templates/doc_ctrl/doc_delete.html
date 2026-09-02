@@ -1,16 +1,16 @@
-{% extends "ordcontrol/ord_base.html" %}
+{% extends "doc_ctrl/doc_base.html" %}
 
 
-{% block ord_content %}
+{% block main %}
     <h1>Вы собираетесь удалить {{ instance.ord_type }} № {{ instance.number }} от {{ instance.date }}</h1>
       <form action="" method="post">
         {% csrf_token %}
         <hr>
         <div class="button-container_confirmation">
-          <a href="{% url 'ordcontrol:ord_list' %}">
-            <button type="button" class="button button_green">Отменить</button>
+          <a href="{% url 'doc_ctrl:doc_list' %}">
+            <button type="button">Отменить</button>
           </a>
-          <button type="submit" class="button button_red">Подтвердить удаление</button>
+          <button type="submit">Подтвердить удаление</button>
         </div>
       </form>
 {% endblock %}

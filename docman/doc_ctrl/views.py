@@ -40,23 +40,29 @@ def doc_list(request):
 
 
 def doc_detail(request, pk):
-    instance = get_object_or_404(Doc, pk=pk)
-    template_name = 'doc_ctrl/doc_detail.html'
-    context = {'instance': instance}
-    return render(request, template_name, context)
+    doc = get_object_or_404(Doc, pk=pk)
+    responsibles = (
+        doc.responsibles
+        .select_related('person')
+        .order_by('role', 'person__last_name')
+    )
+    return render(request, 'doc_ctrl/doc_detail.html', {
+        'doc': doc,
+        'responsibles': responsibles,
+    })
 
 
 def doc_delete(request, pk):
     instance = get_object_or_404(Doc, pk=pk)
     if request.method == 'POST':
         instance.delete()
-        return redirect('doc_ctrl:ord_list')
+        return redirect('doc_ctrl:doc_list')
 
     # Для GET-запроса показываем страницу подтверждения
     context = {
         'instance': instance
     }
-    return render(request, 'doc_ctrl/doc_delete.html', context)
+    return render(request, 'doc_ctrl/doc_delete.html', {'instance': instance})
 
 
 def doc_create_or_edit(request, pk=None):

@@ -1,9 +1,118 @@
-{% extends "ordcontrol/ord_base.html" %}
+{% extends "doc_ctrl/doc_base.html" %}
+{% load static %}
+
+{% block links %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_detail.css' %}">
+{% endblock %}
 
 
-{% block ord_content %}
-  <div>
-    <h1>Информация о документе №{{ instance.number }} от {{ instance.date }}</h1>
-      Instance => {{ instance }}
+
+
+{% block main %}
+<div class="doc-detail">
+
+  <!-- Шапка документа -->
+  <div class="doc-detail__header">
+    <h1>Информация о документе №{{ doc.number }} от {{ doc.date }}</h1>
+    <div class="doc-detail__title-row">
+      <span class="status-badge status-{{ doc.status|lower }}">
+        {{ doc.get_status_display }}
+      </span>
+      <span class="doc-detail__type">{{ doc.doc_type }}</span>
+      <div>
+        <strong class="doc-detail__number">№{{ doc.number }}</strong>
+        <span class="doc-detail__date">от {{ doc.date|date:"d.m.Y" }}</span>
+      </div>
+    </div>
+    <h2 class="doc-detail__title">{{ doc.title }}</h2>
   </div>
+
+  <!-- Основная информация -->
+  <div class="doc-detail__info-grid">
+
+    <div class="info-block">
+      <h4>Период действия</h4>
+      <p>
+        с {{ doc.valid_from_date|date:"d.m.Y" }}
+        по
+        {% if doc.valid_to_date %}
+          {{ doc.valid_to_date|date:"d.m.Y" }}
+        {% else %}
+          <span class="text-muted">бессрочно</span>
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="info-block">
+      <h4>Тип документа</h4>
+      <p>{{ doc.doc_type }}</p>
+    </div>
+
+    <div class="info-block">
+      <h4>Дата создания в системе</h4>
+      <p>{{ doc.created_at|date:"d.m.Y H:i" }}</p>
+    </div>
+
+  </div>
+
+  <!-- Краткое содержание -->
+  {% if doc.summary %}
+  <div class="info-block info-block--full">
+    <h4>Краткое содержание</h4>
+    <p class="doc-detail__summary">{{ doc.summary|linebreaksbr }}</p>
+  </div>
+  {% endif %}
+
+  <!-- Ответственные -->
+  <div class="doc-detail__responsibles">
+    <h3>Ответственные и поручения</h3>
+
+    {% if responsibles %}
+      <table class="resp-table">
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Сотрудник</th>
+            <th>Должность</th>
+            <th>Роль</th>
+            <th>Срок исполнения</th>
+            <th>Поручение</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for resp in responsibles %}
+          <tr>
+            <td class="resp-table__num">{{ forloop.counter }}</td>
+            <td class="resp-table__person">
+              <strong>{{ resp.person.full_name_initials }}</strong>
+            </td>
+            <td class="resp-table__position">{{ resp.person.position|default:"—" }}</td>
+            <td class="resp-table__role">{{ resp.role|default:"—" }}</td>
+            <td class="resp-table__deadline">
+              {% if resp.is_indefinite %}
+                <span class="badge-indefinite">бессрочно</span>
+              {% elif resp.deadline %}
+                {{ resp.deadline|date:"d.m.Y" }}
+              {% else %}
+                <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+            <td class="resp-table__task">{{ resp.task|default:"—"|linebreaksbr }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-muted">Ответственные не назначены.</p>
+    {% endif %}
+  </div>
+
+  <!-- Кнопки действий -->
+  <div class="doc-detail__actions">
+    <a href="{% url 'doc_ctrl:doc_edit' doc.pk %}" class="btn btn-edit">Редактировать</a>
+    <a href="{% url 'doc_ctrl:doc_list' %}" class="btn btn-secondary">К списку</a>
+  </div>
+
+</div>
 {% endblock %}

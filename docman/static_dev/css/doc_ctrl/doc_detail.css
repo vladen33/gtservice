@@ -1,0 +1,139 @@
+.doc-detail {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Шапка */
+.doc-detail__header {
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.doc-detail__title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.doc-detail__type {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.doc-detail__number {
+  font-size: 1.1rem;
+}
+
+.doc-detail__date {
+  color: #666;
+  margin-left: 8px;
+  font-size: 0.9rem;
+}
+
+.doc-detail__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Сетка информации */
+.doc-detail__info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.info-block h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+}
+
+.info-block p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.info-block--full {
+  grid-column: 1 / -1;
+}
+
+.doc-detail__summary {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* Таблица ответственных */
+.doc-detail__responsibles {
+  margin-bottom: 32px;
+}
+
+.doc-detail__responsibles h3 {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+}
+
+.resp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.resp-table thead th {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid #e0e0e0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+}
+
+.resp-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: top;
+}
+
+.resp-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.resp-table__num {
+  color: #aaa;
+  width: 32px;
+  text-align: center;
+}
+
+.resp-table__task {
+  max-width: 300px;
+  line-height: 1.4;
+}
+
+.badge-indefinite {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #f0f4f8;
+  color: #006064;
+  font-size: 0.8rem;
+}
+
+.text-muted {
+  color: #aaa;
+}
+
+/* Кнопки */
+.doc-detail__actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
