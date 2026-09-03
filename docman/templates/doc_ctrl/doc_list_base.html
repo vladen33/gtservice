@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_base.css' %}">
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_as_cards.css' %}">
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_as_table.css' %}">
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/filters.css' %}">
 {% endblock %}
 
 
@@ -15,6 +16,60 @@
     <a href="{% url 'doc_ctrl:doc_create' %}"><button type="button" class="action-button">Добавить документ</button></a>
     <a href="#"><button type="button" class="action-button">Справка</button></a>
   </div>
+
+<!-- Панель фильтрации -->
+<form method="get" class="filter-panel" id="doc-filter-form">
+  <div class="filter-row">
+
+    <!-- Поиск -->
+    <div class="filter-field filter-field--wide">
+      {{ filter.form.search.label_tag }}
+      {{ filter.form.search }}
+    </div>
+
+    <!-- Статус -->
+    <div class="filter-field">
+      {{ filter.form.status.label_tag }}
+      {{ filter.form.status }}
+    </div>
+
+    <!-- Тип документа -->
+    <div class="filter-field">
+      {{ filter.form.doc_type.label_tag }}
+      {{ filter.form.doc_type }}
+    </div>
+
+  </div>
+
+  <div class="filter-row">
+
+    <!-- Дата с -->
+    <div class="filter-field">
+      {{ filter.form.date_from.label_tag }}
+      {{ filter.form.date_from }}
+    </div>
+
+    <!-- Дата по -->
+    <div class="filter-field">
+      {{ filter.form.date_to.label_tag }}
+      {{ filter.form.date_to }}
+    </div>
+
+    <!-- Ответственный -->
+    <div class="filter-field">
+      {{ filter.form.person.label_tag }}
+      {{ filter.form.person }}
+    </div>
+
+    <!-- Кнопки -->
+    <div class="filter-actions">
+      <button type="submit" class="btn btn-primary">Фильтровать</button>
+      <a href="{% url 'doc_ctrl:doc_list' %}" class="btn btn-secondary">Сбросить</a>
+    </div>
+  </div>
+
+</form>
+
   <div class="doc-list-container">
     {% if view_mode == 'table' %}
       {% include 'doc_ctrl/doc_list_as_table.html' %}

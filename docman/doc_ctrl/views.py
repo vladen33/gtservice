@@ -5,6 +5,7 @@ from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
+from .filters import DocFilter
 from .forms import DocForm, DocResponsibleForm
 from .models import Doc, DocResponsible, Person
 
@@ -32,9 +33,18 @@ def doc_list(request):
             )
         )
     )
+
+    # 3. Применяем фильтры
+    doc_filter = DocFilter(request.GET, queryset=docs)
+
+    # 4. Убираем дубликаты, если фильтр по person (JOIN даёт строки)
+    filtered_qs = doc_filter.qs.distinct()
+
+
     context = {
         'docs': docs,
         'view_mode': view_mode,  # передаём текущий режим в шаблон
+        'filter': doc_filter,
     }
     return render(request, 'doc_ctrl/doc_list_base.html', context)
 
