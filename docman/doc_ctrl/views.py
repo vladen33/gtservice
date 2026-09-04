@@ -42,8 +42,11 @@ def doc_list(request):
 
 
     context = {
-        'docs': docs,
-        'view_mode': view_mode,  # передаём текущий режим в шаблон
+        # 'docs': docs,
+        # 'view_mode': view_mode,  # передаём текущий режим в шаблон
+        # 'filter': doc_filter,
+        'docs': filtered_qs,
+        'view_mode': view_mode,
         'filter': doc_filter,
     }
     return render(request, 'doc_ctrl/doc_list_base.html', context)
