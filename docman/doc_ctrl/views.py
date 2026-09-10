@@ -1,13 +1,15 @@
 import logging
+import os
 
 from django.db import transaction
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
+from .constants import ALLOWED_EXTENSIONS, MAX_FILE_SIZE_MB
 from .filters import DocFilter
 from .forms import DocForm, DocResponsibleForm
-from .models import Doc, DocResponsible, Person
+from .models import Doc, DocFile, DocResponsible, Person
 
 
 logger = logging.getLogger(__name__)
@@ -83,6 +85,7 @@ def doc_create_or_edit(request, pk=None):
     doc_instance = None
     people = Person.objects.all().order_by('last_name', 'first_name', 'middle_name')
     responsibles = []
+    existing_files = []
 
     if is_edit:
         doc_instance = get_object_or_404(Doc, pk=pk)
@@ -92,12 +95,14 @@ def doc_create_or_edit(request, pk=None):
             .select_related('person')
             .order_by('role', 'person__last_name')
         )
+        existing_files = doc_instance.files.all()
 
     if request.method == 'POST':
         logger.info('--- %s документа ---', 'Редактирование' if is_edit else 'Создание')
         logger.info('ID = %s, метод = %s', pk or 'новый', request.method)
 
-        form = DocForm(request.POST, instance=doc_instance)
+        # request.FILES обязателен — без него файлы не попадут в обработку
+        form = DocForm(request.POST, request.FILES, instance=doc_instance)
 
         persons = request.POST.getlist('responsibles_person[]')
         roles = request.POST.getlist('responsibles_role[]')
@@ -117,11 +122,42 @@ def doc_create_or_edit(request, pk=None):
                 'people': people,
                 'is_edit': is_edit,
                 'responsibles': responsibles,
+                'existing_files': existing_files,
+            })
+
+        # Получаем список загруженных файлов из request.FILES
+        uploaded_files = request.FILES.getlist('files')
+        logger.info('Получено файлов: %d', len(uploaded_files))
+
+        # Валидация файлов ДО входа в транзакцию
+        file_errors = []
+
+        for f in uploaded_files:
+            ext = os.path.splitext(f.name)[1].lower()
+            if ext not in ALLOWED_EXTENSIONS:
+                message = f'«{f.name}»: недопустимый формат {ext}. Разрешены только PDF и DOCX.'
+                logger.error(message)
+                file_errors.append(message)
+            if f.size > MAX_FILE_SIZE_MB * 1024 * 1024:
+                message = f'«{f.name}»: превышен максимальный размер ({MAX_FILE_SIZE_MB} МБ).'
+                logger.error(message)
+                file_errors.append(message)
+
+        if file_errors:
+            for err in file_errors:
+                messages.error(request, err)
+            return render(request, 'doc_ctrl/doc_form.html', {
+                'form': form,
+                'people': people,
+                'is_edit': is_edit,
+                'responsibles': responsibles,
+                'existing_files': existing_files,
             })
 
         try:
             with transaction.atomic():
                 doc_instance = form.save()
+                # При сохранении документа все ответственные удаляются и добавляются заново
                 DocResponsible.objects.filter(doc=doc_instance).delete()
 
                 for i in range(n):
@@ -151,6 +187,18 @@ def doc_create_or_edit(request, pk=None):
                     resp_instance.doc = doc_instance
                     resp_instance.save()
 
+                    # --- Файлы ---
+                    # Сохраняем только если файлы реально загружены.
+                    # doc_instance уже имеет pk, поэтому doc_file_path
+                    # сработает корректно.
+                    for f in uploaded_files:
+                        DocFile.objects.create(
+                            doc=doc_instance,
+                            file=f,
+                            original_name=f.name,
+                        )
+                        logger.info('Сохранён файл: %s', f.name)
+
         except ValueError:
             messages.error(
                 request,
@@ -161,6 +209,7 @@ def doc_create_or_edit(request, pk=None):
                 'people': people,
                 'is_edit': is_edit,
                 'responsibles': responsibles,
+                'existing_files': existing_files,
             })
 
         messages.success(

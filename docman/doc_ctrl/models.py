@@ -1,9 +1,59 @@
+import os
+
 from datetime import datetime
 
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 
+from .validators import validate_doc_file
+
 FIXED_DEFAULT_DATETIME = timezone.make_aware(datetime(9999, 1, 1))
+
+def doc_file_path(instance, filename):
+    """Генерирует путь: docs/<doc_id>/<filename>"""
+    return os.path.join('docs', str(instance.doc_id), filename)
+
+
+class DocFile(models.Model):
+    doc = models.ForeignKey(
+        'Doc',
+        on_delete=models.CASCADE,
+        related_name='files',
+        verbose_name='Документ',
+    )
+    file = models.FileField(
+        upload_to=doc_file_path,
+        validators=[validate_doc_file],
+        verbose_name='Файл документа',
+    )
+    original_name = models.CharField(
+        max_length=255,
+        verbose_name='Оригинальное имя файла',
+    )
+    uploaded_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата загрузки',
+    )
+
+    class Meta:
+        verbose_name = 'Файл документа'
+        verbose_name_plural = 'Файлы документов'
+        ordering = ['-uploaded_at']
+
+    @property
+    def file_size_mb(self):
+        if self.file and self.file.size:
+            return round(self.file.size / (1024 * 1024), 2)
+        return 0
+
+    @property
+    def extension(self):
+        return os.path.splitext(self.original_name)[1].lower()
+
+    def __str__(self):
+        return f'{self.doc.number}: {self.original_name}'
+
 
 class OrdStatus(models.TextChoices):
     ACTIVE = 'active', 'Действует'
