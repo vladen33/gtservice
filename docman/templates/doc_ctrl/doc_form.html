@@ -4,6 +4,7 @@
 {% block links %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_form.css' %}">
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_form_fileblock.css' %}">
 {% endblock %}
 
 
@@ -37,10 +38,9 @@
           </label>
           <p class="help-text">Можно выбрать сразу несколько файлов.</p>
         </div>
-
-        {% if existing_files %}
-          <div class="existing-files-list">
-            <h4>Прикреплённые файлы:</h4>
+        <div class="existing-files-list">
+          <h4>Прикреплённые файлы:</h4>
+          {% if existing_files %}
             <ul class="file-list">
               {% for f in existing_files %}
                 <li class="file-item">
@@ -62,10 +62,10 @@
                 </li>
               {% endfor %}
             </ul>
-          </div>
-        {% else %}
-          <p class="text-muted">Файлы не прикреплены.</p>
-        {% endif %}
+          {% else %}
+            <p class="text-muted">Файлы не прикреплены.</p>
+          {% endif %}
+        </div>
       </fieldset>
 
 
