@@ -3,6 +3,7 @@ import os
 
 from django.db import transaction
 from django.db.models import Prefetch
+from django.http import Http404, FileResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
@@ -74,9 +75,6 @@ def doc_delete(request, pk):
         return redirect('doc_ctrl:doc_list')
 
     # Для GET-запроса показываем страницу подтверждения
-    context = {
-        'instance': instance
-    }
     return render(request, 'doc_ctrl/doc_delete.html', {'instance': instance})
 
 
@@ -123,6 +121,7 @@ def doc_create_or_edit(request, pk=None):
                 'is_edit': is_edit,
                 'responsibles': responsibles,
                 'existing_files': existing_files,
+                'doc': doc_instance,
             })
 
         # Получаем список загруженных файлов из request.FILES
@@ -152,6 +151,7 @@ def doc_create_or_edit(request, pk=None):
                 'is_edit': is_edit,
                 'responsibles': responsibles,
                 'existing_files': existing_files,
+                'doc': doc_instance,
             })
 
         try:
@@ -187,17 +187,17 @@ def doc_create_or_edit(request, pk=None):
                     resp_instance.doc = doc_instance
                     resp_instance.save()
 
-                    # --- Файлы ---
-                    # Сохраняем только если файлы реально загружены.
-                    # doc_instance уже имеет pk, поэтому doc_file_path
-                    # сработает корректно.
-                    for f in uploaded_files:
-                        DocFile.objects.create(
-                            doc=doc_instance,
-                            file=f,
-                            original_name=f.name,
-                        )
-                        logger.info('Сохранён файл: %s', f.name)
+                # --- Файлы ---
+                # Сохраняем только если файлы реально загружены.
+                # doc_instance уже имеет pk, поэтому doc_file_path
+                # сработает корректно.
+                for f in uploaded_files:
+                    DocFile.objects.create(
+                        doc=doc_instance,
+                        file=f,
+                        original_name=f.name,
+                    )
+                    logger.info('Сохранён файл: %s', f.name)
 
         except ValueError:
             messages.error(
@@ -210,6 +210,7 @@ def doc_create_or_edit(request, pk=None):
                 'is_edit': is_edit,
                 'responsibles': responsibles,
                 'existing_files': existing_files,
+                'doc': doc_instance,
             })
 
         messages.success(
@@ -225,4 +226,44 @@ def doc_create_or_edit(request, pk=None):
         'people': people,
         'is_edit': is_edit,
         'responsibles': responsibles,
+        'existing_files': existing_files,
+        'doc': doc_instance,
     })
+
+
+def doc_file_download(request, pk, file_pk):
+    """Скачивание файла документа."""
+    doc_file = get_object_or_404(DocFile, pk=file_pk, doc_id=pk)
+
+    if not doc_file.file:
+        logger.error('Файл не найден на диске: DocFile #%s', file_pk)
+        raise Http404('Файл не найден')
+
+    # Открываем файл как поток, чтобы не грузить целиком в память
+    response = FileResponse(
+        doc_file.file.open('rb'),
+        as_attachment=True,
+        filename=doc_file.original_name,
+    )
+    return response
+
+
+def doc_file_delete(request, pk, file_pk):
+    """Удаление файла документа (запись в БД + файл с диска)."""
+    doc_file = get_object_or_404(DocFile, pk=file_pk, doc_id=pk)
+
+    if request.method == 'POST':
+        filename = doc_file.original_name
+        # Удаляем файл с диска
+        if doc_file.file:
+            doc_file.file.delete(save=False)
+        # Удаляем запись из БД
+        doc_file.delete()
+
+        logger.info('Удалён файл «%s» из документа #%s', filename, pk)
+        messages.success(request, f'Файл «{filename}» удалён.')
+        return redirect('doc_ctrl:doc_edit', pk=pk)
+
+    logger.warning('Попытка удаления файла через GET — запрещено')
+    messages.error(request, 'Удаление файла возможно только через POST-запрос.')
+    return redirect('doc_ctrl:doc_edit', pk=pk)

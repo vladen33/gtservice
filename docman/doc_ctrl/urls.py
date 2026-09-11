@@ -10,4 +10,8 @@ urlpatterns = [
     path('<int:pk>/detail/', views.doc_detail, name='doc_detail'),
     path('<int:pk>/edit/', views.doc_create_or_edit, name='doc_edit'),
     path('<int:pk>/delete/', views.doc_delete, name='doc_delete'),
+    path('<int:pk>/files/<int:file_pk>/download/',
+         views.doc_file_download, name='doc_file_download'),
+    path('<int:pk>/files/<int:file_pk>/delete/',
+         views.doc_file_delete, name='doc_file_delete'),
 ]
