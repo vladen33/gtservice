@@ -3,16 +3,209 @@
   margin: 2px;
 }
 
-.action-button-container {
+.doc-list-header {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+
+/* Левая колонка — кнопки */
+.actions-left {
+  flex: 1;
+  width: 100px; /* чтобы не сжималось слишком сильно */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.action-button:hover {
+  border-color: #0066cc;
+  background: #f0f7ff;
+  color: #005fba;
+}
+
+.action-button.btn-secondary {
+  border-color: #bbb;
+  color: #555;
+}
+
+.action-button.btn-secondary:hover {
+  border-color: #999;
+  background: #f5f5f5;
+  color: #444;
+}
+
+.btn-icon {
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Правая колонка — фильтры */
+.filters-right {
+  flex: 2;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.filter-toggle-wrapper {
+  margin-bottom: 12px;
+  align-self: flex-start;
+}
+
+.filter-toggle-btn {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #444;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-toggle-btn:hover {
+  background: #e9ecef;
+  border-color: #bbb;
+}
+
+
+.filter-panel {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  width: 100%;
+  box-sizing: border-box;
+
+  /* Плавность */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+}
+
+.filter-panel.open {
+  max-height: 500px; /* подбери значение чуть больше, чем реально будет высота */
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
-  margin: 2px;
-  padding: 2px;
+  margin-bottom: 10px;
+}
+
+.filter-row:last-child {
+  margin-bottom: 0;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px; /* компактнее, чем 160px */
+  flex: 1 1 140px;   /* сжимается, но не меньше 140px */
+}
+
+.filter-field--wide {
+  flex: 2 1 220px;  /* шире, но не доминирует полностью */
+  min-width: 220px;
+}
+
+.filter-field label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #777;
+  margin: 0;
+}
+
+.filter-field input,
+.filter-field select,
+.filter-field textarea {
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  height: auto;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  border-color: #0066cc;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+}
+
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-left: auto; /* прижимаем вправо внутри строки */
+  margin-top: 4px;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.filter-btn-primary {
+  background-color: #0066cc;
+  color: #fff;
+  border: none;
+}
+
+.filter-btn-primary:hover {
+  background-color: #0052a3;
+}
+
+.filter-btn-secondary {
+  background-color: #f1f3f5;
+  color: #333;
   border: 1px solid #ccc;
 }
 
-.view-toggle {
+.filter-btn-secondary:hover {
+  background-color: #e2e6ea;
+}
+
+.footer-actions-block {
+  display: flex;
+  gap: 2px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.footer-setting-block {
   display: flex;
   gap: 2px;
   border: 1px solid #ccc;
