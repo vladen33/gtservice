@@ -1,5 +1,11 @@
 {% extends "doc_ctrl/doc_base.html" %}
 
+{% block links %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_delete.css' %}">
+{% endblock %}
+
+
 
 {% block main %}
     <h1>Вы собираетесь удалить {{ instance.ord_type }} № {{ instance.number }} от {{ instance.date }}</h1>

@@ -1,16 +1,42 @@
-.doc-list-container {
+.doc-list_main-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  background-color: #fff;
+}
+
+.doc-list-aside-panel {
+  flex: 0 1 200px;        /* grow=0, shrink=1, basis=200px */
+  min-width: 150px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn {
+  height: 24px;
+  border: 1px solid #888;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.filters {
+  flex: 2;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+
+.doc-list-content {
   padding: 2px;
   margin: 2px;
 }
 
-.doc-list-header {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: flex-start;
-  padding: 12px;
-  margin-bottom: 20px;
-}
+
 
 
 /* Левая колонка — кнопки */
@@ -53,19 +79,9 @@
   color: #444;
 }
 
-.btn-icon {
-  font-weight: bold;
-  line-height: 1;
-}
 
-/* Правая колонка — фильтры */
-.filters-right {
-  flex: 2;
-  min-width: 320px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
+
+
 
 .filter-toggle-wrapper {
   margin-bottom: 12px;

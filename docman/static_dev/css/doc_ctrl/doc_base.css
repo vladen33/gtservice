@@ -30,8 +30,6 @@ html, body {
   border: 1px solid darkcyan;
   border-radius: 4px;
   padding: 0 16px;
-  display: flex;
-  align-items: center; /* Центрируем текст по вертикали */
   box-sizing: border-box;
 }
 
@@ -47,14 +45,8 @@ html, body {
   min-height: 0; /* Предотвращает расширение flex-элемента из-за overflow */
 }
 
-.header-title {
+.header1-title {
   font-size: 20px;
   font-weight: 700;
   margin: 0;
-}
-
-.button-container_confirmation {
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
 }

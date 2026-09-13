@@ -1,0 +1,10 @@
+
+:root {
+  --color-primary: #4caf50;       /* основной зелёный */
+  --color-primary-hover: #388e3c; /* при наведении */
+  --color-text-main: #333;
+  --color-text-secondary: #666;
+  --color-border: #ccc;
+  --color-bg-body: #fafafa;
+  --color-bg-card: #ffffff;
+}

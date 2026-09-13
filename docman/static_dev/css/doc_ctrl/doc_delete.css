@@ -1,0 +1,5 @@
+.button-container_confirmation {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
