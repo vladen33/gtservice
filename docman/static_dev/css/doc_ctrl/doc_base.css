@@ -13,12 +13,19 @@ html, body {
   height: 100vh; /* Занимает весь экран */
   width: 100vw;
   box-sizing: border-box; /* Чтобы padding/border не ломали размеры */
+  padding: 2px;          /* отступ от верхнего и нижнего края */
+  gap: 2px;             /* отступ между элементами */
 }
 
 .header,
 .main,
 .footer {
-  margin: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 4px;
+  background-color: var(--color-bg-body);
+  border: 1px solid var(--color-border);
+  box-sizing: border-box;
 }
 
 /* Шапка и подвал: не сжимаются, фиксированная высота */
@@ -26,22 +33,15 @@ html, body {
 .footer {
   flex-shrink: 0;
   height: 32px;
-  background-color: beige;
-  border: 1px solid darkcyan;
-  border-radius: 4px;
   padding: 0 16px;
-  box-sizing: border-box;
+
 }
 
 /* Контент: занимает всё оставшееся место, только здесь скролл */
 .main {
   flex: 1;
   overflow-y: auto; /* Вертикальный скролл при необходимости */
-  background-color: beige;
-  border: 1px solid darkcyan;
-  border-radius: 4px;
   padding: 4px;
-  box-sizing: border-box;
   min-height: 0; /* Предотвращает расширение flex-элемента из-за overflow */
 }
 
