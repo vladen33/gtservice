@@ -1,15 +1,12 @@
 .doc-list_main-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   gap: 12px;
   background-color: #fff;
 }
 
 .doc-list-aside-panel {
-  flex: 0 1 200px;        /* grow=0, shrink=1, basis=200px */
-  min-width: 150px;
-  max-width: 300px;
+  width: 200px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -17,28 +14,98 @@
 
 .btn {
   height: 24px;
-  border: 1px solid #888;
+  border: 1px solid var(--color-primary);
   border-radius: 4px;
+  color: var(--color-primary);
   font-size: 12px;
 }
 
+.btn {
+  height: 24px;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  color: var(--color-primary);
+  font-size: 12px;
+
+  /* Центрирование текста */
+  display: inline-flex;      /* или flex — если кнопка должна вести себя как блок */
+  align-items: center;       /* вертикальное выравнивание */
+  justify-content: center;   /* горизонтальное выравнивание */
+
+  box-sizing: border-box;    /* чтобы border не увеличивал высоту */
+  padding: 0 12px;           /* добавляет «воздух» по бокам, текст не прилипает к краям */
+  text-decoration: none;     /* убирает подчёркивание у ссылки */
+  line-height: 1;            /* опционально: убирает лишние отступы у шрифта */
+}
+
+.btn:hover {
+  color: var(--color-primary-hover);
+  border: 1px solid var(--color-primary-hover);
+}
+
+.btn:active {
+  color: var(--color-primary-active);
+  border: 1px solid var(--color-primary-active);
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.12);
+}
+
 .filters {
-  flex: 2;
-  min-width: 320px;
   display: flex;
   flex-direction: column;
   width: 100%;
+  border: 1px solid var(--color-primary);
+  padding: 4px;
+  border-radius: 4px;
 }
+
+.filter-toggle-wrapper {
+  align-self: flex-start;
+}
+
+.filter-toggle-btn {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #444;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-toggle-btn:hover {
+  background: #e9ecef;
+  border-color: #bbb;
+}
+
+.filter-panel {
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  width: 100%;
+  box-sizing: border-box;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.15s ease-out;
+}
+
+.filter-panel.open {
+  margin-top: 4px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  max-height: 500px; /* подбери значение чуть больше, чем реально будет высота */
+}
+
+
+
+
 
 
 .doc-list-content {
   padding: 2px;
   margin: 2px;
 }
-
-
-
-
 /* Левая колонка — кнопки */
 .actions-left {
   flex: 1;
@@ -83,50 +150,10 @@
 
 
 
-.filter-toggle-wrapper {
-  margin-bottom: 12px;
-  align-self: flex-start;
-}
-
-.filter-toggle-btn {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: #444;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.filter-toggle-btn:hover {
-  background: #e9ecef;
-  border-color: #bbb;
-}
 
 
-.filter-panel {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 14px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  width: 100%;
-  box-sizing: border-box;
 
-  /* Плавность */
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease-out;
-}
 
-.filter-panel.open {
-  max-height: 500px; /* подбери значение чуть больше, чем реально будет высота */
-  padding-top: 14px;
-  padding-bottom: 14px;
-}
 
 .filter-row {
   display: flex;

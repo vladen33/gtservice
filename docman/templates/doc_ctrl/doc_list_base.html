@@ -18,7 +18,7 @@
       <!-- Фильтры (свернуты по умолчанию) -->
       <div class="filters">
         <div class="filter-toggle-wrapper">
-          <button type="button" id="toggle-filters-btn" class="filter-toggle-btn">
+          <button type="button" id="filter-toggle-btn" class="filter-toggle-btn">
             <span class="toggle-text">Фильтры</span>
             <span class="toggle-arrow">▼</span>
           </button>
@@ -85,7 +85,6 @@
 {% endblock %}
 
 {% block footer %}
-
   <div class="footer-setting-block">
     <a href="{% switch_view_mode 'table' %}"
        class="toggle-btn {% if view_mode == 'table' %}toggle-active{% endif %}"

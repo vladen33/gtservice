@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.getElementById('toggle-filters-btn');
+  const toggleBtn = document.getElementById('filter-toggle-btn');
   const filterPanel = document.querySelector('.filter-panel');
   const arrow = toggleBtn.querySelector('.toggle-arrow');
   const text = toggleBtn.querySelector('.toggle-text');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Открываем
       filterPanel.classList.add('open');
       arrow.textContent = '▼';
-      text.textContent = 'Скрыть фильтры';
+      text.textContent = 'Фильтры';
     }
   });
 });
