@@ -58,6 +58,14 @@
                     {{ f.extension|upper }} • {{ f.file_size_mb }} МБ
                   </span>
 
+                  <button
+                    type="button"
+                    class="btn-delete"
+                    data-pk="{{ f.pk }}"
+                    data-name="{{ f.original_name|escapejs }}">
+                    Удалить
+                  </button>
+
                   <!-- Отдельная форма для удаления, чтобы не конфликтовать с основной -->
 <!--                  <form method="post" action="{% url 'doc_ctrl:doc_file_delete' doc.pk f.pk %}"-->
 <!--                        style="display:inline" onsubmit="return confirm('Удалить файл «{{ f.original_name }}»?');">-->

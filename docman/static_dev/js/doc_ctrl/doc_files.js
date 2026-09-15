@@ -73,3 +73,67 @@ chosenList.addEventListener('click', (e) => {
   selectedFiles.forEach(f => dt.items.add(f));
   filesInput.files = dt.files;
 });
+
+
+// Удаление файла с сервера
+document.querySelectorAll('.btn-delete').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const name = btn.dataset.name;
+    const pk = btn.dataset.pk;
+    if (confirm(`Удалить файл «${name}»?`)) {
+      deleteFile(pk);
+    }
+  });
+});
+
+function deleteFile(pk) {
+  // Получаем CSRF-токен из cookie (стандарт для Django)
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  const csrftoken = getCookie('csrftoken');
+  const url = `/doc_ctrl/file/delete/${pk}/`; // подставь свой URL из urls.py
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken,
+    },
+    body: JSON.stringify({}), // тело можно оставить пустым, если view не требует данных
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json(); // или response.text(), если view возвращает текст
+    })
+    .then((data) => {
+      // Успех: удаляем строку из DOM
+      const row = document.querySelector(`[data-file-id="${pk}"]`);
+      if (row) {
+        row.style.opacity = '0';
+        setTimeout(() => row.remove(), 300); // плавное исчезновение
+      }
+
+      // Опционально: показать уведомление
+      alert('Файл удалён');
+    })
+    .catch((error) => {
+      console.error('Ошибка удаления:', error);
+      alert('Не удалось удалить файл. Проверьте консоль и права доступа.');
+    });
+}
+
