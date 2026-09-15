@@ -3,9 +3,10 @@ import os
 
 from django.db import transaction
 from django.db.models import Prefetch
-from django.http import Http404, FileResponse
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from django.views.decorators.http import require_POST
 
 from .constants import ALLOWED_EXTENSIONS, MAX_FILE_SIZE_MB
 from .filters import DocFilter
@@ -45,9 +46,6 @@ def doc_list(request):
 
 
     context = {
-        # 'docs': docs,
-        # 'view_mode': view_mode,  # передаём текущий режим в шаблон
-        # 'filter': doc_filter,
         'docs': filtered_qs,
         'view_mode': view_mode,
         'filter': doc_filter,
@@ -248,22 +246,28 @@ def doc_file_download(request, pk, file_pk):
     return response
 
 
-def doc_file_delete(request, pk, file_pk):
-    """Удаление файла документа (запись в БД + файл с диска)."""
-    doc_file = get_object_or_404(DocFile, pk=file_pk, doc_id=pk)
+@require_POST
+def doc_file_delete(request, doc_pk, file_pk):
+    """Удаление файла документа (запрос от JS через fetch)."""
+    logger.info('Начало удаления файла c id=%s из документа c id=%s', file_pk, doc_pk)
 
-    if request.method == 'POST':
+    try:
+        doc_file = get_object_or_404(DocFile, pk=file_pk, doc_id=doc_pk)
         filename = doc_file.original_name
+
         # Удаляем файл с диска
         if doc_file.file:
             doc_file.file.delete(save=False)
+
         # Удаляем запись из БД
         doc_file.delete()
 
-        logger.info('Удалён файл «%s» из документа #%s', filename, pk)
-        messages.success(request, f'Файл «{filename}» удалён.')
-        return redirect('doc_ctrl:doc_edit', pk=pk)
+        logger.info('Удалён файл «%s» из документа #%s', filename, doc_pk)
+        return JsonResponse({'status': 'ok', 'message': f'Файл «{filename}» удалён.'})
 
-    logger.warning('Попытка удаления файла через GET — запрещено')
-    messages.error(request, 'Удаление файла возможно только через POST-запрос.')
-    return redirect('doc_ctrl:doc_edit', pk=pk)
+    except Exception as e:
+        logger.error('Ошибка при удалении файла #%s: %s', file_pk, e)
+        return JsonResponse(
+            {'status': 'error', 'message': 'Ошибка при удалении файла'},
+            status=500,
+        )

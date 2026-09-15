@@ -12,6 +12,6 @@ urlpatterns = [
     path('<int:pk>/delete/', views.doc_delete, name='doc_delete'),
     path('<int:pk>/files/<int:file_pk>/download/',
          views.doc_file_download, name='doc_file_download'),
-    path('<int:pk>/files/<int:file_pk>/delete/',
+    path('<int:doc_pk>/files/<int:file_pk>/delete/',
          views.doc_file_delete, name='doc_file_delete'),
 ]

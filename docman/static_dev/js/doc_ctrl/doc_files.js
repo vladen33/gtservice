@@ -79,15 +79,15 @@ chosenList.addEventListener('click', (e) => {
 document.querySelectorAll('.btn-delete').forEach(btn => {
   btn.addEventListener('click', () => {
     const name = btn.dataset.name;
-    const pk = btn.dataset.pk;
+    const doc_pk = btn.dataset.doc_pk;
+    const file_pk = btn.dataset.file_pk;
     if (confirm(`Удалить файл «${name}»?`)) {
-      deleteFile(pk);
+      deleteFile(doc_pk, file_pk);
     }
   });
 });
 
-function deleteFile(pk) {
-  // Получаем CSRF-токен из cookie (стандарт для Django)
+function deleteFile(doc_pk, file_pk) {
   function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -104,7 +104,10 @@ function deleteFile(pk) {
   }
 
   const csrftoken = getCookie('csrftoken');
-  const url = `/doc_ctrl/file/delete/${pk}/`; // подставь свой URL из urls.py
+  // Проверь, что этот URL точно совпадает с path в urls.py
+  const url = `/${doc_pk}/files/${file_pk}/delete/`;
+  console.log('Путь для УДАЛЕНИЯ файла = ', url);
+  console.log('csrftoken = ', csrftoken);
 
   fetch(url, {
     method: 'POST',
@@ -112,28 +115,31 @@ function deleteFile(pk) {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken,
     },
-    body: JSON.stringify({}), // тело можно оставить пустым, если view не требует данных
+    body: JSON.stringify({}),
   })
-    .then((response) => {
+    .then(response => {
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Сначала читаем ответ как текст, чтобы увидеть HTML (ошибку Django)
+        return response.text().then(text => {
+          console.error('HTTP error:', response.status);
+          console.error('Ответ сервера (HTML):', text);
+          throw new Error(`HTTP ${response.status}`);
+        });
       }
-      return response.json(); // или response.text(), если view возвращает текст
+      return response.json();
     })
-    .then((data) => {
-      // Успех: удаляем строку из DOM
-      const row = document.querySelector(`[data-file-id="${pk}"]`);
+    .then(data => {
+      // Успех
+      const row = document.querySelector(`[data-file-id="${file_pk}"]`); // обрати внимание: file_pk, а не pk
       if (row) {
         row.style.opacity = '0';
-        setTimeout(() => row.remove(), 300); // плавное исчезновение
+        setTimeout(() => row.remove(), 300);
       }
-
-      // Опционально: показать уведомление
       alert('Файл удалён');
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Ошибка удаления:', error);
-      alert('Не удалось удалить файл. Проверьте консоль и права доступа.');
+      alert('Не удалось удалить файл. Проверь консоль (F12).');
     });
 }
 

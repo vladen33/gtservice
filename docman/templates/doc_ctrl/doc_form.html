@@ -21,6 +21,7 @@
     <form id="doc-form" method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
+
       <!-- Поля документа из таблицы 'doc' -->
       <fieldset class="doc-form-section">
         <legend>Данные документа</legend>
@@ -48,7 +49,7 @@
           {% if existing_files %}
             <ul class="file-list">
               {% for f in existing_files %}
-                <li class="file-item">
+                <li class="file-item" data-file-id="{{f.pk}}">
                   <span class="file-name">
                     <a href="{% url 'doc_ctrl:doc_file_download' doc.pk f.pk %}" title="Скачать">
                       {{ f.original_name }}
@@ -61,17 +62,12 @@
                   <button
                     type="button"
                     class="btn-delete"
-                    data-pk="{{ f.pk }}"
-                    data-name="{{ f.original_name|escapejs }}">
+                    data-name="{{ f.original_name|escapejs }}"
+                    data-doc_pk="{{ doc.pk }}"
+                    data-file_pk="{{ f.pk }}"
+                  >
                     Удалить
                   </button>
-
-                  <!-- Отдельная форма для удаления, чтобы не конфликтовать с основной -->
-<!--                  <form method="post" action="{% url 'doc_ctrl:doc_file_delete' doc.pk f.pk %}"-->
-<!--                        style="display:inline" onsubmit="return confirm('Удалить файл «{{ f.original_name }}»?');">-->
-<!--                    {% csrf_token %}-->
-<!--                    <button type="submit" class="btn-link text-danger">Удалить</button>-->
-<!--                  </form>-->
                 </li>
               {% endfor %}
             </ul>

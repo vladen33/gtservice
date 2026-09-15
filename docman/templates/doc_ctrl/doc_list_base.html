@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_base.css' %}">
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_as_cards.css' %}">
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_list_as_table.css' %}">
-  <script defer src="{% static 'js/doc_ctrl/doc_list.js' %}"></script>
+  <script defer src="{% static 'js/doc_ctrl/doc_filters.js' %}"></script>
 {% endblock %}
 
 
@@ -64,8 +64,8 @@
 
             <!-- Кнопки -->
             <div class="filter-actions">
-              <button type="submit" class="filter-btn filter-btn-primary">Применить</button>
-              <a href="{% url 'doc_ctrl:doc_list' %}" class="filter-btn filter-btn-secondary">Сброс</a>
+              <button type="submit" class="btn">Применить</button>
+              <a href="{% url 'doc_ctrl:doc_list' %}" class="btn">Сброс</a>
             </div>
           </div>
         </form>
