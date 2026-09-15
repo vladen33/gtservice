@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hasFilters) {
     filterPanel.classList.add('open');
     arrow.textContent = '▼';
-    text.textContent = 'Скрыть фильтры';
+    text.textContent = 'Фильтры (свернуть)';
   } else {
     // По умолчанию закрыт
     filterPanel.classList.remove('open');
     arrow.textContent = '▶';
-    text.textContent = 'Фильтры';
+    text.textContent = 'Фильтры (развернуть)';
   }
 
   toggleBtn.addEventListener('click', () => {
@@ -25,12 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Закрываем
       filterPanel.classList.remove('open');
       arrow.textContent = '▶';
-      text.textContent = 'Фильтры';
+      text.textContent = 'Фильтры (развернуть)';
     } else {
       // Открываем
       filterPanel.classList.add('open');
       arrow.textContent = '▼';
-      text.textContent = 'Фильтры';
+      text.textContent = 'Фильтры (свернуть)';
     }
   });
 });

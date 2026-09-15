@@ -14,20 +14,20 @@
 {% block main %}
   <div class="doc-list_main-container">
     <div class="doc-list-aside-panel">
-      <a href="{% url 'doc_ctrl:doc_create' %}" class="btn">Добавить документ</a>
+      <a href="{% url 'doc_ctrl:doc_create' %}" class="btn btn_accent">Добавить документ</a>
       <!-- Фильтры (свернуты по умолчанию) -->
       <div class="filters">
         <div class="filter-toggle-wrapper">
-          <button type="button" id="filter-toggle-btn" class="filter-toggle-btn">
-            <span class="toggle-text">Фильтры</span>
-            <span class="toggle-arrow">▼</span>
+          <button type="button" id="filter-toggle-btn" class="btn filter-toggle-btn">
+            <span class="toggle-text"></span>
+            <span class="toggle-arrow"></span>
           </button>
         </div>
 
-        <form method="get" class="filter-panel" id="doc-filter-form">
-          <div class="filter-row">
+        <form method="get" class="filter-panel">
+          <div class="filter-block">
             <!-- Поиск -->
-            <div class="filter-field filter-field--wide">
+            <div class="filter-field">
               {{ filter.form.search.label_tag }}
               {{ filter.form.search }}
             </div>
@@ -43,9 +43,7 @@
               {{ filter.form.doc_type.label_tag }}
               {{ filter.form.doc_type }}
             </div>
-          </div>
 
-          <div class="filter-row">
             <!-- Дата с -->
             <div class="filter-field">
               {{ filter.form.date_from.label_tag }}

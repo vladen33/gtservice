@@ -5,6 +5,8 @@
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_form.css' %}">
   <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_form_fileblock.css' %}">
+  <script defer src="{% static 'js/doc_ctrl/doc_files.js' %}"></script>
+  <script defer src="{% static 'js/doc_ctrl/doc_responsibles.js' %}"></script>
 {% endblock %}
 
 
@@ -20,234 +22,148 @@
       {% csrf_token %}
 
       <!-- Поля документа из таблицы 'doc' -->
-    <fieldset class="doc-form-section">
-      <legend>Данные документа</legend>
-        <table>
-          {{ form.as_table }}
-        </table>
-    </fieldset>
+      <fieldset class="doc-form-section">
+        <legend>Данные документа</legend>
+          <table>
+            {{ form.as_table }}
+          </table>
+      </fieldset>
 
 
-    <!-- Блок файлов документа -->
-    <fieldset class="doc-form-section">
-      <legend>Файлы документа</legend>
-      <div class="files-upload-block">
-        <label class="upload-label">
-          <input type="file" name="files" multiple accept=".pdf,.docx" id="files-input">
-          <span>Выберите файлы (PDF, DOCX)</span>
-        </label>
-        <p class="help-text">Можно выбрать сразу несколько файлов.</p>
-      </div>
-      <div class="chosen-files-list" id="chosen-files-list">
-        <p class="chosen-files-empty" id="chosen-files-empty">Новые файлы не выбраны</p>
-      </div>
-      <div class="existing-files-list">
-        <h4>Прикреплённые файлы:</h4>
-        {% if existing_files %}
-          <ul class="file-list">
-            {% for f in existing_files %}
-              <li class="file-item">
-                <span class="file-name">
-                  <a href="{% url 'doc_ctrl:doc_file_download' doc.pk f.pk %}" title="Скачать">
-                    {{ f.original_name }}
-                  </a>
-                </span>
-                <span class="file-meta">
-                  {{ f.extension|upper }} • {{ f.file_size_mb }} МБ
-                </span>
+      <!-- Блок файлов документа -->
+      <fieldset class="doc-form-section">
+        <legend>Файлы документа</legend>
+        <div class="files-upload-block">
+          <label class="upload-label">
+            <input type="file" name="files" multiple accept=".pdf,.docx" id="files-input">
+            <span>Выберите файлы (PDF, DOCX)</span>
+          </label>
+          <p class="help-text">Можно выбрать сразу несколько файлов.</p>
+        </div>
+        <div class="chosen-files-list" id="chosen-files-list">
+          <p class="chosen-files-empty" id="chosen-files-empty">Новые файлы не выбраны</p>
+        </div>
+        <div class="existing-files-list">
+          <h4>Прикреплённые файлы:</h4>
+          {% if existing_files %}
+            <ul class="file-list">
+              {% for f in existing_files %}
+                <li class="file-item">
+                  <span class="file-name">
+                    <a href="{% url 'doc_ctrl:doc_file_download' doc.pk f.pk %}" title="Скачать">
+                      {{ f.original_name }}
+                    </a>
+                  </span>
+                  <span class="file-meta">
+                    {{ f.extension|upper }} • {{ f.file_size_mb }} МБ
+                  </span>
 
-                <!-- Отдельная форма для удаления, чтобы не конфликтовать с основной -->
-                <form method="post" action="{% url 'doc_ctrl:doc_file_delete' doc.pk f.pk %}"
-                      style="display:inline" onsubmit="return confirm('Удалить файл «{{ f.original_name }}»?');">
-                  {% csrf_token %}
-                  <button type="submit" class="btn-link text-danger">Удалить</button>
-                </form>
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="text-muted">Файлы не прикреплены.</p>
-        {% endif %}
-      </div>
-    </fieldset>
-
-    <!-- Шаблон для отображения выбранных в форме файлов -->
-    <template id="chosen-file-template">
-      <div class="chosen-file-item">
-        <span class="chosen-file-icon"></span>
-        <span class="chosen-file-name"></span>
-        <span class="chosen-file-size"></span>
-        <button type="button" class="chosen-file-remove" title="Убрать файл">×</button>
-      </div>
-    </template>
-    <!-- JavaScript для отображения выбранных в форме файлов -->
-    <script>
-      const filesInput = document.getElementById('files-input');
-      const chosenList = document.getElementById('chosen-files-list');
-      const emptyMsg = document.getElementById('chosen-files-empty');
-      const fileTemplate = document.getElementById('chosen-file-template').content;
-
-      // Хранилище выбранных файлов
-      let selectedFiles = [];
-
-      function formatSize(bytes) {
-        if (bytes < 1024) return bytes + ' Б';
-        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ';
-        return (bytes / (1024 * 1024)).toFixed(1) + ' МБ';
-      }
-
-      function getIconSVG(ext) {
-        if (ext === '.pdf') {
-          return `<svg viewBox="0 0 16 16" width="20" height="20" fill="#dc2626">
-            <path d="M2 1.5A1.5 1.5 0 013.5 0h6.379a1.5 1.5 0 01.603.127 1.5 1.5 0 01.494.331l2.566 2.567a1.5 1.5 0 01.341.497A1.5 1.5 0 0114 4.621V14.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 14.5v-13zM3.5 1a.5.5 0 00-.5.5v13a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V6H9.5A1.5 1.5 0 018 4.5V1H3.5zM9 4.5a.5.5 0 00.5.5h3.379L9 1.621V4.5z"/>
-            <text x="3.5" y="13" font-size="5" font-weight="bold" fill="#dc2626">PDF</text>
-          </svg>`;
-        }
-        // DOCX
-        return `<svg viewBox="0 0 16 16" width="20" height="20" fill="#2563eb">
-          <path d="M2 1.5A1.5 1.5 0 013.5 0h6.379a1.5 1.5 0 01.603.127 1.5 1.5 0 01.494.331l2.566 2.567a1.5 1.5 0 01.341.497A1.5 1.5 0 0114 4.621V14.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 14.5v-13zM3.5 1a.5.5 0 00-.5.5v13a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V6H9.5A1.5 1.5 0 018 4.5V1H3.5zM9 4.5a.5.5 0 00.5.5h3.379L9 1.621V4.5z"/>
-          <text x="2.5" y="13" font-size="4.5" font-weight="bold" fill="#2563eb">DOCX</text>
-        </svg>`;
-      }
-
-      function renderFileList() {
-        // Очищаем всё, кроме сообщения-заглушки
-        const items = chosenList.querySelectorAll('.chosen-file-item');
-        items.forEach(item => item.remove());
-
-        if (selectedFiles.length === 0) {
-          emptyMsg.style.display = 'block';
-          return;
-        }
-
-        emptyMsg.style.display = 'none';
-
-        selectedFiles.forEach((file, index) => {
-          const clone = fileTemplate.cloneNode(true);
-          const ext = '.' + (file.name.split('.').pop() || '').toLowerCase();
-          const item = clone.querySelector('.chosen-file-item');
-          item.dataset.index = index;
-          clone.querySelector('.chosen-file-icon').innerHTML = getIconSVG(ext);
-          clone.querySelector('.chosen-file-name').textContent = file.name;
-          clone.querySelector('.chosen-file-size').textContent = formatSize(file.size);
-          chosenList.appendChild(clone.firstElementChild);
-        });
-      }
-
-      // Добавление файлов при выборе
-      filesInput.addEventListener('change', (e) => {
-        const newFiles = Array.from(e.target.files);
-        selectedFiles = selectedFiles.concat(newFiles);
-        renderFileList();
-      });
-
-      // Удаление файла из списка (крестик)
-      chosenList.addEventListener('click', (e) => {
-        if (!e.target.classList.contains('chosen-file-remove')) return;
-
-        const item = e.target.closest('.chosen-file-item');
-        const index = parseInt(item.dataset.index, 10);
-        selectedFiles.splice(index, 1);
-        renderFileList();
-
-        // Обновляем input: создаём новый DataTransfer без удалённого файла
-        const dt = new DataTransfer();
-        selectedFiles.forEach(f => dt.items.add(f));
-        filesInput.files = dt.files;
-      });
-    </script>
-
-    <!-- Блок ответственных: OrdResponsible -->
-    <fieldset class="doc-form-section">
-      <legend>Ответственные лица</legend>
-        <table class="doc-table">
-          <colgroup>
-            <col style="width: 15%;">   <!-- Ответственное лицо -->
-            <col style="width: 20%;">   <!-- Роль -->
-            <col style="width: 40%;">   <!-- Задача -->
-            <col style="width: 5%;">   <!-- Бессрочно -->
-            <col style="width: 10%;">   <!-- Срок исполнения -->
-            <col style="width: 10%;">    <!-- Кнопка Удалить -->
-          </colgroup>
-          <thead>
-            <tr>
-              <th>
-                Ответственный (NEW)
-                <button type="button" id="add-responsible-btn">
-                  +
-                </button>
-              </th>
-              <th>Роль</th>
-              <th>Задача</th>
-              <th>Бессрочно</th>
-              <th>Срок исполнения</th>
-              <th>Кнопки</th>
-            </tr>
-          </thead>
-          <tbody id="responsibles-body">
-            <!-- Если responsibles содержит ответственных, то они добавляются на страницу при рендере на сервере -->
-            <!-- на клиенте они добавляются или удаляются пользователем при помощи JavaScript -->
-            {% if responsibles %}
-              {% for resp in responsibles %}
-                <tr class="responsible-row">
-                  <td>
-                    <select name="responsibles_person[]" class="width100">
-                      {% for person in people %}
-                        <option
-                          value="{{ person.id }}"
-                          {% if person.id == resp.person_id %} selected {% endif %}
-                        >
-                          {{ person.full_name_initials }}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      name="responsibles_role[]"
-                      placeholder="Например: контролёр"
-                      value="{{ resp.role }}"
-                      class="width100"
-                      required
-                    >
-                  </td>
-                  <td><textarea name="responsibles_task[]" rows="2" class="width100">{{ resp.task|default:"" }}</textarea></td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      {% if resp.is_indefinite %} checked {% endif %}
-                      value=""
-                      onchange="toggleDeadline(this)"
-                    >
-                  </td>
-                  <td>
-                    <input
-                      type="hidden"
-                      name="responsibles_deadline[]"
-                      class="deadline-hidden-field"
-                      value="{{ resp.deadline|date:'Y-m-d' }}"
-                    >
-                    <input
-                      type="date"
-                      class="deadline-date-field"
-                      disabled
-                      onchange="addDateToHidden(this, this.previousElementSibling)"
-                      value="{{ resp.deadline|date:'Y-m-d' }}"
-                    >
-                  </td>
-
-                  <td>
-                    <button type="button" class="remove-row-btn">
-                      Удалить
-                    </button>
-                  </td>
-                </tr>
+                  <!-- Отдельная форма для удаления, чтобы не конфликтовать с основной -->
+<!--                  <form method="post" action="{% url 'doc_ctrl:doc_file_delete' doc.pk f.pk %}"-->
+<!--                        style="display:inline" onsubmit="return confirm('Удалить файл «{{ f.original_name }}»?');">-->
+<!--                    {% csrf_token %}-->
+<!--                    <button type="submit" class="btn-link text-danger">Удалить</button>-->
+<!--                  </form>-->
+                </li>
               {% endfor %}
-            {% endif %}
-          </tbody>
-        </table>
-    </fieldset>
+            </ul>
+          {% else %}
+            <p class="text-muted">Файлы не прикреплены.</p>
+          {% endif %}
+        </div>
+      </fieldset>
+
+      <!-- Блок ответственных: OrdResponsible -->
+      <fieldset class="doc-form-section">
+        <legend>Ответственные лица</legend>
+          <table class="doc-table">
+            <colgroup>
+              <col style="width: 15%;">   <!-- Ответственное лицо -->
+              <col style="width: 20%;">   <!-- Роль -->
+              <col style="width: 40%;">   <!-- Задача -->
+              <col style="width: 5%;">   <!-- Бессрочно -->
+              <col style="width: 10%;">   <!-- Срок исполнения -->
+              <col style="width: 10%;">    <!-- Кнопка Удалить -->
+            </colgroup>
+            <thead>
+              <tr>
+                <th>
+                  Ответственный (NEW)
+                  <button type="button" id="add-responsible-btn">
+                    +
+                  </button>
+                </th>
+                <th>Роль</th>
+                <th>Задача</th>
+                <th>Бессрочно</th>
+                <th>Срок исполнения</th>
+                <th>Кнопки</th>
+              </tr>
+            </thead>
+            <tbody id="responsibles-body">
+              <!-- Если responsibles содержит ответственных, то они добавляются на страницу при рендере на сервере -->
+              <!-- на клиенте они добавляются или удаляются пользователем при помощи JavaScript -->
+              {% if responsibles %}
+                {% for resp in responsibles %}
+                  <tr class="responsible-row">
+                    <td>
+                      <select name="responsibles_person[]" class="width100">
+                        {% for person in people %}
+                          <option
+                            value="{{ person.id }}"
+                            {% if person.id == resp.person_id %} selected {% endif %}
+                          >
+                            {{ person.full_name_initials }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        name="responsibles_role[]"
+                        placeholder="Например: контролёр"
+                        value="{{ resp.role }}"
+                        class="width100"
+                        required
+                      >
+                    </td>
+                    <td><textarea name="responsibles_task[]" rows="2" class="width100">{{ resp.task|default:"" }}</textarea></td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        {% if resp.is_indefinite %} checked {% endif %}
+                        value=""
+                        onchange="toggleDeadline(this)"
+                      >
+                    </td>
+                    <td>
+                      <input
+                        type="hidden"
+                        name="responsibles_deadline[]"
+                        class="deadline-hidden-field"
+                        value="{{ resp.deadline|date:'Y-m-d' }}"
+                      >
+                      <input
+                        type="date"
+                        class="deadline-date-field"
+                        disabled
+                        onchange="addDateToHidden(this, this.previousElementSibling)"
+                        value="{{ resp.deadline|date:'Y-m-d' }}"
+                      >
+                    </td>
+
+                    <td>
+                      <button type="button" class="remove-row-btn">
+                        Удалить
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+      </fieldset>
       <a href="{% url 'doc_ctrl:doc_list' %}">
         <button type="button">
           Отменить
@@ -263,6 +179,17 @@
     </form>
   </div>
 
+  <!-- Шаблон для отображения выбранных в форме файлов -->
+  <template id="chosen-file-template">
+    <div class="chosen-file-item">
+      <span class="chosen-file-icon"></span>
+      <span class="chosen-file-name"></span>
+      <span class="chosen-file-size"></span>
+      <button type="button" class="chosen-file-remove" title="Убрать файл">×</button>
+    </div>
+  </template>
+
+  <!-- Шаблон для отображения ответственных -->
   <template id="responsible-row-template">
     <tr class="responsible-row">
       <td>
@@ -308,56 +235,4 @@
     </tr>
   </template>
 
-  <script>
-    // Простой JS для добавления/удаления строк без перезагрузки
-    const respBody = document.getElementById('responsibles-body');
-    const respRowTemplate = document.getElementById('responsible-row-template').content;
-    const addRespBtn = document.getElementById('add-responsible-btn');
-
-    function addRow() {
-      const clone = respRowTemplate.cloneNode(true);
-      const deadline = clone.querySelector('input[name="responsibles_deadline[]"]');
-      deadline.value = '';
-      respBody.appendChild(clone.firstElementChild);
-    }
-
-    addRespBtn.addEventListener('click', addRow);
-
-    respBody.addEventListener('click', (e) => {
-      if (e.target.classList.contains('remove-row-btn')) {
-        const row = e.target.closest('.responsible-row');
-        if (respBody.children.length > 0) {
-          row.remove();
-        }
-      }
-    });
-
-    function addDateToHidden(visible_field, hidden_field) {
-        hidden_field.value = visible_field.value;
-    }
-
-
-    // Опционально: валидация перед отправкой
-    document.getElementById('doc-form').addEventListener('submit', (e) => {
-      // Можно добавить свою валидацию, если нужно
-    });
-
-    function toggleDeadline(cb) {
-      const row = cb.closest('.responsible-row');
-      const dateInput = row.querySelector('.deadline-date-field');
-      const dateHiddenInput = row.querySelector('.deadline-hidden-field');
-      if (!dateInput) return;
-      if (cb.checked) {
-        dateInput.disabled = true;
-        dateInput.value = '';
-        dateHiddenInput.value = '';
-      } else {
-        dateInput.disabled = false;
-        dateInput.value = new Date().toISOString().split('T')[0];
-        dateHiddenInput.value = dateInput.value;
-      }
-    }
-  </script>
-
-</div>
 {% endblock %}

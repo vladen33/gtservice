@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   gap: 12px;
-  background-color: #fff;
+  background-color: var(--color-bg-body);
 }
 
 .doc-list-aside-panel {
@@ -24,18 +24,21 @@
   height: 24px;
   border: 1px solid var(--color-primary);
   border-radius: 4px;
-  color: var(--color-primary);
-  font-size: 12px;
-
+  color: var(--color-text-main);
+  font-size: 0.75rem;
   /* Центрирование текста */
   display: inline-flex;      /* или flex — если кнопка должна вести себя как блок */
   align-items: center;       /* вертикальное выравнивание */
   justify-content: center;   /* горизонтальное выравнивание */
-
   box-sizing: border-box;    /* чтобы border не увеличивал высоту */
   padding: 0 12px;           /* добавляет «воздух» по бокам, текст не прилипает к краям */
   text-decoration: none;     /* убирает подчёркивание у ссылки */
   line-height: 1;            /* опционально: убирает лишние отступы у шрифта */
+}
+
+.btn_accent {
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .btn:hover {
@@ -59,30 +62,22 @@
 }
 
 .filter-toggle-wrapper {
-  align-self: flex-start;
+  width: 100%;              /* родитель тоже должен быть на всю ширину */
+  box-sizing: border-box;
 }
 
 .filter-toggle-btn {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  padding: 6px 12px;
-  border-radius: 6px;
+  display: flex;
+  width: 100%;
+  padding: 4px;
   cursor: pointer;
-  font-size: 0.85rem;
-  color: #444;
-  display: inline-flex;
+  box-sizing: border-box;
   align-items: center;
-  gap: 6px;
-}
-
-.filter-toggle-btn:hover {
-  background: #e9ecef;
-  border-color: #bbb;
+  justify-content: space-between; /* ключевое: разнести по краям */
 }
 
 .filter-panel {
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  background: var(--color-bg-body);
   width: 100%;
   box-sizing: border-box;
   max-height: 0;
@@ -92,9 +87,43 @@
 
 .filter-panel.open {
   margin-top: 4px;
-  border: 1px solid #e0e0e0;
+  max-height: 600px; /* подбери значение чуть больше, чем реально будет высота */
+}
+
+.filter-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-field label {
+  font-size: 0.75rem;
+  color: var(--color-text-main);
+}
+
+.filter-field label:hover {
+  color: var(--color-primary-hover);
+}
+
+
+
+.filter-field input,
+.filter-field select,
+.filter-field textarea {
+  border: 1px solid var(--color-border);
   border-radius: 4px;
-  max-height: 500px; /* подбери значение чуть больше, чем реально будет высота */
+  font-size: 0.75rem;
+  height: auto;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  border-color: var(--color-border-focus);
 }
 
 
@@ -155,54 +184,7 @@
 
 
 
-.filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 10px;
-}
 
-.filter-row:last-child {
-  margin-bottom: 0;
-}
-
-.filter-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 140px; /* компактнее, чем 160px */
-  flex: 1 1 140px;   /* сжимается, но не меньше 140px */
-}
-
-.filter-field--wide {
-  flex: 2 1 220px;  /* шире, но не доминирует полностью */
-  min-width: 220px;
-}
-
-.filter-field label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #777;
-  margin: 0;
-}
-
-.filter-field input,
-.filter-field select,
-.filter-field textarea {
-  padding: 6px 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  height: auto;
-}
-
-.filter-field input:focus,
-.filter-field select:focus {
-  border-color: #0066cc;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
-}
 
 .filter-actions {
   display: flex;
