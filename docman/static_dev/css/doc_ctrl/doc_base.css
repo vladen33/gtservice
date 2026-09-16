@@ -33,8 +33,47 @@ html, body {
 .footer {
   flex-shrink: 0;
   height: 32px;
-  padding: 0 16px;
+  padding: 0;
+}
 
+.header {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.logo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  /* Контрастный фон на основе твоего основного цвета */
+  background-color: var(--color-primary);
+  color: #ffffff; /* белый текст — максимальная читаемость */
+
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase; /* делает надпись более «кнопочной» */
+
+  padding: 10px 20px;
+  border-radius: 8px;
+
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3); /* лёгкая тень под цвет кнопки */
+
+  transition: all 0.2s ease;
+}
+
+.logo-btn:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.4);
+}
+
+.logo-btn:active {
+  background-color: var(--color-primary-active);
+  transform: translateY(0);
 }
 
 /* Контент: занимает всё оставшееся место, только здесь скролл */
@@ -43,10 +82,4 @@ html, body {
   overflow-y: auto; /* Вертикальный скролл при необходимости */
   padding: 4px;
   min-height: 0; /* Предотвращает расширение flex-элемента из-за overflow */
-}
-
-.header1-title {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0;
 }

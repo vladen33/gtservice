@@ -13,74 +13,187 @@
 {% block main %}
   <div class="doc-container">
     {% if is_edit %}
-      <h1>Редактирование документа</h1>
+      <h1 class="header1-title">Редактирование документа</h1>
     {% else %}
-      <h1>Добавить новый документ</h1>
+      <h1 class="header1-title">Новый документ</h1>
     {% endif %}
 
     <form id="doc-form" method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
 
-      <!-- Поля документа из таблицы 'doc' -->
-      <fieldset class="doc-form-section">
-        <legend>Данные документа</legend>
-          <table>
-            {{ form.as_table }}
-          </table>
-      </fieldset>
+      <div class="layout-upper-block">
+        <!-- Поля документа из таблицы 'doc' -->
+        <fieldset class="doc-form-section">
+          <legend>Данные документа</legend>
+
+          <div class="doc-form-wrapper">
+
+            <div class="doc-form-row">
+              <label class="doc-form-label" for="{{ form.number.id_for_label }}">
+                {{ form.number.label }}
+                {% if form.number.field.required %}<span class="required">*</span>{% endif %}
+              </label>
+              <div class="doc-form-field">
+                {{ form.number }}
+                {% if form.number.help_text %}<small class="doc-form-help">{{ form.number.help_text }}</small>{% endif %}
+                {% if form.number.errors %}<div class="doc-form-errors">{{ form.number.errors }}</div>{% endif %}
+              </div>
+            </div>
+
+            <div class="doc-form-row">
+              <label class="doc-form-label" for="{{ form.date.id_for_label }}">
+                {{ form.date.label }}
+                {% if form.date.field.required %}<span class="required">*</span>{% endif %}
+              </label>
+              <div class="doc-form-field">
+                {{ form.date }}
+                {% if form.date.help_text %}<small class="doc-form-help">{{ form.date.help_text }}</small>{% endif %}
+                {% if form.date.errors %}<div class="doc-form-errors">{{ form.date.errors }}</div>{% endif %}
+              </div>
+            </div>
+
+            <div class="doc-form-row">
+              <label class="doc-form-label" for="{{ form.doc_type.id_for_label }}">
+                {{ form.doc_type.label }}
+                {% if form.doc_type.field.required %}<span class="required">*</span>{% endif %}
+              </label>
+              <div class="doc-form-field">
+                {{ form.doc_type }}
+                {% if form.doc_type.help_text %}<small class="doc-form-help">{{ form.doc_type.help_text }}</small>{% endif %}
+                {% if form.doc_type.errors %}<div class="doc-form-errors">{{ form.doc_type.errors }}</div>{% endif %}
+              </div>
+            </div>
+
+            <div class="doc-form-row">
+              <label class="doc-form-label" for="{{ form.title.id_for_label }}">
+                {{ form.title.label }}
+                {% if form.title.field.required %}<span class="required">*</span>{% endif %}
+              </label>
+              <div class="doc-form-field">
+                {{ form.title }}
+                {% if form.title.help_text %}<small class="doc-form-help">{{ form.title.help_text }}</small>{% endif %}
+                {% if form.title.errors %}<div class="doc-form-errors">{{ form.title.errors }}</div>{% endif %}
+              </div>
+            </div>
+
+            <div class="doc-form-row doc-form-row--full">
+              <label class="doc-form-label" for="{{ form.summary.id_for_label }}">
+                {{ form.summary.label }}
+              </label>
+              <div class="doc-form-field">
+                {{ form.summary }}
+                {% if form.summary.help_text %}<small class="doc-form-help">{{ form.summary.help_text }}</small>{% endif %}
+                {% if form.summary.errors %}<div class="doc-form-errors">{{ form.summary.errors }}</div>{% endif %}
+              </div>
+            </div>
+
+            <div class="doc-form-row">
+              <label class="doc-form-label" for="{{ form.valid_from_date.id_for_label }}">
+                {{ form.valid_from_date.label }}
+                {% if form.valid_from_date.field.required %}<span class="required">*</span>{% endif %}
+              </label>
+              <div class="doc-form-field">
+                {{ form.valid_from_date }}
+                {% if form.valid_from_date.help_text %}<small class="doc-form-help">{{ form.valid_from_date.help_text }}</small>{% endif %}
+                {% if form.valid_from_date.errors %}<div class="doc-form-errors">{{ form.valid_from_date.errors }}</div>{% endif %}
+              </div>
+            </div>
+
+            <div class="doc-form-row">
+              <label class="doc-form-label" for="{{ form.valid_to_date.id_for_label }}">
+                {{ form.valid_to_date.label }}
+                {% if form.valid_to_date.field.required %}<span class="required">*</span>{% endif %}
+              </label>
+              <div class="doc-form-field">
+                {{ form.valid_to_date }}
+                {% if form.valid_to_date.help_text %}<small class="doc-form-help">{{ form.valid_to_date.help_text }}</small>{% endif %}
+                {% if form.valid_to_date.errors %}<div class="doc-form-errors">{{ form.valid_to_date.errors }}</div>{% endif %}
+              </div>
+            </div>
+
+            <div class="doc-form-row">
+              <label class="doc-form-label" for="{{ form.status.id_for_label }}">
+                {{ form.status.label }}
+                {% if form.status.field.required %}<span class="required">*</span>{% endif %}
+              </label>
+              <div class="doc-form-field">
+                {{ form.status }}
+                {% if form.status.help_text %}<small class="doc-form-help">{{ form.status.help_text }}</small>{% endif %}
+                {% if form.status.errors %}<div class="doc-form-errors">{{ form.status.errors }}</div>{% endif %}
+              </div>
+            </div>
+
+            {% if form.created_at %}
+              <div class="doc-form-row">
+                <label class="doc-form-label" for="{{ form.created_at.id_for_label }}">
+                  {{ form.created_at.label }}
+                </label>
+                <div class="doc-form-field">
+                  {{ form.created_at }}
+                  {% if form.created_at.help_text %}<small class="doc-form-help">{{ form.created_at.help_text }}</small>{% endif %}
+                  {% if form.created_at.errors %}<div class="doc-form-errors">{{ form.created_at.errors }}</div>{% endif %}
+                </div>
+              </div>
+            {% endif %}
+
+          </div>
+        </fieldset>
 
 
-      <!-- Блок файлов документа -->
-      <fieldset class="doc-form-section">
-        <legend>Файлы документа</legend>
-        <div class="files-upload-block">
-          <label class="upload-label">
-            <input type="file" name="files" multiple accept=".pdf,.docx" id="files-input">
-            <span>Выберите файлы (PDF, DOCX)</span>
-          </label>
-          <p class="help-text">Можно выбрать сразу несколько файлов.</p>
-        </div>
-        <div class="chosen-files-list" id="chosen-files-list">
-          <p class="chosen-files-empty" id="chosen-files-empty">Новые файлы не выбраны</p>
-        </div>
-        <div class="existing-files-list">
-          <h4>Прикреплённые файлы:</h4>
-          {% if existing_files %}
-            <ul class="file-list">
-              {% for f in existing_files %}
-                <li class="file-item" data-file-id="{{f.pk}}">
-                  <span class="file-name">
-                    <a href="{% url 'doc_ctrl:doc_file_download' doc.pk f.pk %}" title="Скачать">
-                      {{ f.original_name }}
-                    </a>
-                  </span>
-                  <span class="file-meta">
-                    {{ f.extension|upper }} • {{ f.file_size_mb }} МБ
-                  </span>
+        <!-- Блок файлов документа -->
+        <fieldset class="doc-form-section">
+          <legend>Файлы документа</legend>
+          <div class="files-upload-block">
+            <label class="upload-label">
+              <input type="file" name="files" multiple id="files-input">
+              <span class="help-text">Выберите файлы <br>
+                (можно выбрать сразу несколько файлов)
+              </span>
+            </label>
+          </div>
+          <div class="chosen-files-list" id="chosen-files-list">
+            <h4>Новые файлы:</h4>
+            <p class="chosen-files-empty" id="chosen-files-empty">Новые файлы не выбраны</p>
+          </div>
+          <div class="existing-files-list">
+            <h4>Прикреплённые файлы:</h4>
+            {% if existing_files %}
+              <ul class="file-list">
+                {% for f in existing_files %}
+                  <li class="file-item" data-file-id="{{f.pk}}">
+                    <span class="file-name">
+                      <a href="{% url 'doc_ctrl:doc_file_download' doc.pk f.pk %}" title="Скачать">
+                        {{ f.original_name }}
+                      </a>
+                    </span>
+                    <span class="file-meta">
+                      {{ f.extension|upper }} • {{ f.file_size_mb }} МБ
+                    </span>
 
-                  <button
-                    type="button"
-                    class="btn-delete"
-                    data-name="{{ f.original_name|escapejs }}"
-                    data-doc_pk="{{ doc.pk }}"
-                    data-file_pk="{{ f.pk }}"
-                  >
-                    Удалить
-                  </button>
-                </li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            <p class="text-muted">Файлы не прикреплены.</p>
-          {% endif %}
-        </div>
-      </fieldset>
+                    <button
+                      type="button"
+                      class="btn-delete"
+                      data-name="{{ f.original_name|escapejs }}"
+                      data-doc_pk="{{ doc.pk }}"
+                      data-file_pk="{{ f.pk }}"
+                    >
+                      Удалить
+                    </button>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">Файлы не прикреплены.</p>
+            {% endif %}
+          </div>
+        </fieldset>
+      </div>
 
       <!-- Блок ответственных: OrdResponsible -->
       <fieldset class="doc-form-section">
         <legend>Ответственные лица</legend>
-          <table class="doc-table">
+          <table class="responsible-table">
             <colgroup>
               <col style="width: 15%;">   <!-- Ответственное лицо -->
               <col style="width: 20%;">   <!-- Роль -->

@@ -7,14 +7,21 @@
       <link rel="stylesheet" href="{% static 'css/base-reset.css' %}">
       <link rel="stylesheet" href="{% static 'css/variables.css' %}">
       <link rel="stylesheet" href="{% static 'css/doc_ctrl/doc_base.css' %}">
+      <svg style="display: none;">
+        {% include "doc_ctrl/icons-sprite.svg" %}
+      </svg>
     {% endblock %}
   </head>
   <body class="body">
     <div class="page-wrapper">
       <header class="header">
-        {% block header %}
-          <h1 class="header1-title">Контроль исполнения документов</h1>
-        {% endblock %}
+        <div class="logo-btn">
+          <a href="{% url 'doc_ctrl:doc_list' %}">DOCMAN</a>
+        </div>
+        <div>
+          {% block header %}
+          {% endblock %}
+        </div>
       </header>
       <main class="main">
         {% block main %}

@@ -15,8 +15,7 @@ class DocForm(forms.ModelForm):
             'valid_from_date', 'valid_to_date', 'status'
         ]
         widgets = {
-            'title': forms.TextInput(attrs={'style': 'width: 100%;'}),
-            'summary': forms.Textarea(attrs={'rows': 3, 'cols': 120}),
+            'summary': forms.Textarea(attrs={'rows': 3, 'cols': 30}),
         }
 
 
@@ -26,6 +25,6 @@ class DocResponsibleForm(forms.ModelForm):
         # fields = '__all__'
         fields = ['person', 'role', 'deadline', 'is_indefinite', 'task']
         widgets = {
-            'task': forms.Textarea(attrs={'rows': 3, 'cols': 120}),
+            'task': forms.Textarea(attrs={'rows': 3, 'cols': 30}),
         }
 

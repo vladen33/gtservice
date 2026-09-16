@@ -1,2 +1,2 @@
-ALLOWED_EXTENSIONS = ['.pdf', '.docx']
+# ALLOWED_EXTENSIONS = ['.pdf', '.docx']
 MAX_FILE_SIZE_MB = 20

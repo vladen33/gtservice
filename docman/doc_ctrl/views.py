@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 
-from .constants import ALLOWED_EXTENSIONS, MAX_FILE_SIZE_MB
+from .constants import MAX_FILE_SIZE_MB
 from .filters import DocFilter
 from .forms import DocForm, DocResponsibleForm
 from .models import Doc, DocFile, DocResponsible, Person
@@ -130,11 +130,6 @@ def doc_create_or_edit(request, pk=None):
         file_errors = []
 
         for f in uploaded_files:
-            ext = os.path.splitext(f.name)[1].lower()
-            if ext not in ALLOWED_EXTENSIONS:
-                message = f'«{f.name}»: недопустимый формат {ext}. Разрешены только PDF и DOCX.'
-                logger.error(message)
-                file_errors.append(message)
             if f.size > MAX_FILE_SIZE_MB * 1024 * 1024:
                 message = f'«{f.name}»: превышен максимальный размер ({MAX_FILE_SIZE_MB} МБ).'
                 logger.error(message)

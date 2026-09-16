@@ -14,19 +14,35 @@ function formatSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(1) + ' МБ';
 }
 
+
 function getIconSVG(ext) {
-  if (ext === '.pdf') {
-    return `<svg viewBox="0 0 16 16" width="20" height="20" fill="#dc2626">
-      <path d="M2 1.5A1.5 1.5 0 013.5 0h6.379a1.5 1.5 0 01.603.127 1.5 1.5 0 01.494.331l2.566 2.567a1.5 1.5 0 01.341.497A1.5 1.5 0 0114 4.621V14.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 14.5v-13zM3.5 1a.5.5 0 00-.5.5v13a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V6H9.5A1.5 1.5 0 018 4.5V1H3.5zM9 4.5a.5.5 0 00.5.5h3.379L9 1.621V4.5z"/>
-      <text x="3.5" y="13" font-size="5" font-weight="bold" fill="#dc2626">PDF</text>
-    </svg>`;
-  }
-  // DOCX
-  return `<svg viewBox="0 0 16 16" width="20" height="20" fill="#2563eb">
-    <path d="M2 1.5A1.5 1.5 0 013.5 0h6.379a1.5 1.5 0 01.603.127 1.5 1.5 0 01.494.331l2.566 2.567a1.5 1.5 0 01.341.497A1.5 1.5 0 0114 4.621V14.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 14.5v-13zM3.5 1a.5.5 0 00-.5.5v13a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V6H9.5A1.5 1.5 0 018 4.5V1H3.5zM9 4.5a.5.5 0 00.5.5h3.379L9 1.621V4.5z"/>
-    <text x="2.5" y="13" font-size="4.5" font-weight="bold" fill="#2563eb">DOCX</text>
+  const e = (ext || '').toLowerCase();
+
+  const iconMap = {
+    '.pdf':  'icon-pdf',
+    '.docx': 'icon-docx',
+    '.doc':  'icon-docx',
+    '.xlsx': 'icon-xlsx',
+    '.xls':  'icon-xlsx',
+    '.pptx': 'icon-pptx',
+    '.ppt':  'icon-pptx',
+    '.txt':  'icon-txt',
+    '.zip':  'icon-zip',
+    '.rar':  'icon-zip',
+    '.7z':   'icon-zip',
+    '.png':  'icon-png',
+    '.jpg':  'icon-jpg',
+    '.jpeg': 'icon-jpg',
+    '.csv':  'icon-csv',
+  };
+
+  const iconId = iconMap[e] || 'icon-default';
+
+  return `<svg class="icon ${iconId}" viewBox="0 0 16 16" width="20" height="20">
+    <use href="#${iconId}"></use>
   </svg>`;
 }
+
 
 function renderFileList() {
   // Очищаем всё, кроме сообщения-заглушки

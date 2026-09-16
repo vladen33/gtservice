@@ -94,7 +94,7 @@ class Doc(models.Model):
     summary = models.TextField(
         blank=True,
         null=True,
-        verbose_name='Краткое содержание документа'
+        verbose_name='Содержание документа'
     )
     valid_from_date = models.DateField(
         default=timezone.now,
