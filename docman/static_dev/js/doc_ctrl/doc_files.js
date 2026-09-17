@@ -60,7 +60,7 @@ function renderFileList() {
     const clone = fileTemplate.cloneNode(true);
     const ext = '.' + (file.name.split('.').pop() || '').toLowerCase();
     const item = clone.querySelector('.chosen-file-item');
-    item.dataset.index = index;
+    item.dataset.index = index.toString();
     clone.querySelector('.chosen-file-icon').innerHTML = getIconSVG(ext);
     clone.querySelector('.chosen-file-name').textContent = file.name;
     clone.querySelector('.chosen-file-size').textContent = formatSize(file.size);
@@ -122,8 +122,6 @@ function deleteFile(doc_pk, file_pk) {
   const csrftoken = getCookie('csrftoken');
   // Проверь, что этот URL точно совпадает с path в urls.py
   const url = `/${doc_pk}/files/${file_pk}/delete/`;
-  console.log('Путь для УДАЛЕНИЯ файла = ', url);
-  console.log('csrftoken = ', csrftoken);
 
   fetch(url, {
     method: 'POST',
