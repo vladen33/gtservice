@@ -1,3 +1,5 @@
+{% load doc_tags %}
+
 <div class="doc-cards">
   {% for doc in docs %}
     <div class="doc-card">
@@ -14,15 +16,41 @@
         </div>
       </div>
 
-      <!-- Основная информация -->
+      <!-- Основной блок карточки -->
       <div class="card-body">
-        <h3 class="card-title">{{ doc.title }}</h3>
+        <!-- Верхняя часть основного блока -->
+        <div class="card-body-upper-block">
+          <!-- Заголовок и срок действия документа -->
+          <div class="card-docinfo">
+            <h3 class="card-title">{{ doc.title }}</h3>
 
-        <div class="card-period">
-          Период:
-            {% if doc.valid_from_date %}{{ doc.valid_from_date|date:"d.m.Y" }}{% else %}—{% endif %}
-            —
-            {% if doc.valid_to_date %}{{ doc.valid_to_date|date:"d.m.Y" }}{% else %}—{% endif %}
+            <div class="card-period">
+              Период:
+                {% if doc.valid_from_date %}{{ doc.valid_from_date|date:"d.m.Y" }}{% else %}—{% endif %}
+                —
+                {% if doc.valid_to_date %}{{ doc.valid_to_date|date:"d.m.Y" }}{% else %}—{% endif %}
+            </div>
+          </div>
+
+          <!-- Файлы документа -->
+          <div class="card-files">
+            {% if doc.files.all %}
+              {% for file_obj in doc.files.all %}
+                <a href="{{ file_obj.file.url }}"
+                  class="card-file-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="{{ file_obj.original_name }}">
+                  <svg class="card-file-icon" width="20" height="20" fill="currentColor">
+                    <use href="#{{ file_obj.extension|file_icon_name }}"></use>
+                    {% comment %} <use href="#icon-pdf"></use> {% endcomment %}
+                  </svg>
+                </a>
+              {% endfor %}
+            {% else %}
+              <span class="card-files-empty">Нет файлов</span>
+            {% endif %}
+          </div>
         </div>
 
         <!-- Ответственные (твои карточки) -->

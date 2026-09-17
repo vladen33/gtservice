@@ -32,9 +32,13 @@ def doc_list(request):
         .select_related('doc_type')
         .prefetch_related(
             Prefetch(
+                'files',
+                queryset=DocFile.objects.order_by('-uploaded_at'),
+            ),
+            Prefetch(
                 'responsibles',
-                queryset=DocResponsible.objects.select_related('person')
-            )
+                queryset=DocResponsible.objects.select_related('person'),
+            ),
         )
     )
 
@@ -43,7 +47,6 @@ def doc_list(request):
 
     # 4. Убираем дубликаты, если фильтр по person (JOIN даёт строки)
     filtered_qs = doc_filter.qs.distinct()
-
 
     context = {
         'docs': filtered_qs,

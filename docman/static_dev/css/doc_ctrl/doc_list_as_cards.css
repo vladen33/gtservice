@@ -36,9 +36,25 @@
   font-weight: 400;
 }
 
+.card-body-upper-block {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 8px;
+  
+  border-bottom: 1px solid var(--color-border);
+}
+
+.card-docinfo {
+  align-self: flex-start;
+}
+
 .card-title {
   margin: 0 0 2px 0;
   font-size: 1rem;
+  min-width: 0;            /* обязательно для переноса текста внутри флекса */
+  overflow-wrap: break-word;  /* перенос длинных слов без пробелов */
+  word-break: break-word;     /* запасной вариант */
+  white-space: normal;        /* отменяет любые nowrap */
 }
 
 .card-period {
@@ -80,4 +96,39 @@
   border: 1px solid #bbb;
   border-radius: 4px;
   font-size: 0.75rem;
+}
+
+.card-files {
+  display: flex;
+  justify-self: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.card-file-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 6px;
+  background: #f8f9fa;
+  border: 1px solid #e2e3e4;
+  border-radius: 6px;
+  color: #495057;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.card-file-link:hover {
+  background: #e9eff4;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  color: #0d6efd;
+}
+
+.card-file-icon {
+  flex-shrink: 0;
+}
+
+.card-files-empty {
+  font-size: 13px;
+  color: #adb5bd;
 }

@@ -1,0 +1,22 @@
+{
+    "filetree-pro.exclude": [
+        "node_modules",
+        "dist",
+        "build",
+        "out",
+        ".git",
+        ".venv",
+        "venv",
+        "env",
+        ".env",
+        "target",
+        "bin",
+        "obj",
+        ".vs",
+        ".idea",
+        "*.pyc",
+        "*.log",
+        "*.tmp",
+        "*.cache"
+    ]
+}
