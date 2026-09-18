@@ -37,13 +37,12 @@
             {% if doc.files.all %}
               {% for file_obj in doc.files.all %}
                 <a href="{{ file_obj.file.url }}"
-                  class="card-file-link"
+                  class="card-file-link {{ file_obj.extension|file_ext_class }}"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="{{ file_obj.original_name }}">
-                  <svg class="card-file-icon" width="20" height="20" fill="currentColor">
+                  <svg class="card-file-icon" width="20" height="20" >
                     <use href="#{{ file_obj.extension|file_icon_name }}"></use>
-                    {% comment %} <use href="#icon-pdf"></use> {% endcomment %}
                   </svg>
                 </a>
               {% endfor %}

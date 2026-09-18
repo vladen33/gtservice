@@ -25,3 +25,11 @@ def file_icon_name(extension: str) -> str:
     }
 
     return mapping.get(extension.lower(), "icon-default")
+
+
+@register.filter
+def file_ext_class(extension: str) -> str:
+    if not extension:
+        return ""
+    ext = extension.lower().lstrip(".")
+    return f"file-ext-{ext}"

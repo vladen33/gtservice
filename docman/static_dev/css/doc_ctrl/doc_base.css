@@ -83,3 +83,28 @@ html, body {
   padding: 4px;
   min-height: 0; /* Предотвращает расширение flex-элемента из-за overflow */
 }
+
+/* Цвета по типу файла */
+/* PDF — Adobe Acrobat: тёмно‑синий/сине‑фиолетовый */
+.file-ext-pdf    { color: #d2222d; }
+
+/* DOCX — Microsoft Word: красно‑оранжевый */
+.file-ext-docx   { color: #0051a2; }
+
+/* XLSX — Microsoft Excel: зелёный */
+.file-ext-xlsx   { color: #107c41; }
+
+/* PPTX — Microsoft PowerPoint: оранжево‑красный */
+.file-ext-pptx   { color: #f78200; }
+
+/* ZIP — общепринятый «архивный» жёлтый */
+.file-ext-zip    { color: #fbc104; }
+
+/* PNG — нейтральный сине‑серый (без сильной привязки к софту) */
+.file-ext-png    { color: #2b3643; }
+
+/* JPG — тёплый оранжево‑коричневый (под фото/камеру) */
+.file-ext-jpg    { color: #e67e22; }
+
+/* TXT — нейтральный тёмно‑серый */
+.file-ext-txt    { color: #555555; }
